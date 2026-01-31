@@ -685,22 +685,22 @@
     const STICKERS = ['🦁', '🐸', '🦄', '🎉', '⭐', '🏆', '🤓', '🧠', '🐶', '🐱', '🦋', '🌈', '🔥', '💪', '👑', '🎮', '🚀', '🍀', '🌻', '🦊'];
     let selectedSticker = STICKERS[0];
 
-    // Firebase: paste your config from Firebase Console so EVERYONE sees the same top scorers and user count.
-    // 1) Go to https://console.firebase.google.com → Create project → Build → Realtime Database → Create (test mode).
-    // 2) Project settings (gear) → Your apps → Add web app → Copy the config object here.
-    // 3) In Realtime Database → Rules, set: { "rules": { "quiz": { ".read": true, ".write": true } } } then Publish.
+    // Firebase: realtime-fe14f – scores from all users (all devices & locations)
+    // Realtime Database → Rules: { "rules": { "quiz": { ".read": true, ".write": true } } }
     const FIREBASE_CONFIG = {
-      apiKey: "AIzaSyDummyReplaceWithYourOwnFromFirebaseConsole",
-      authDomain: "your-project.firebaseapp.com",
-      databaseURL: "https://your-project-default-rtdb.firebaseio.com",
-      projectId: "your-project",
-      storageBucket: "your-project.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abc123"
+      apiKey: "AIzaSyCtMkmwxC4YNqpNja0z40Y1eFPIIRz48T4",
+      authDomain: "realtime-fe14f.firebaseapp.com",
+      databaseURL: "https://realtime-fe14f-default-rtdb.firebaseio.com",
+      projectId: "realtime-fe14f",
+      storageBucket: "realtime-fe14f.firebasestorage.app",
+      messagingSenderId: "643773236111",
+      appId: "1:643773236111:web:a85ee147f0a8f3707a01fa",
+      measurementId: "G-N6GXTCPX88"
     };
     let firebaseDb = null;
     try {
-      if (typeof firebase !== 'undefined' && FIREBASE_CONFIG.databaseURL && FIREBASE_CONFIG.databaseURL.indexOf('your-project') === -1) {
+      var configOk = typeof firebase !== 'undefined' && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey.indexOf('PASTE_') === -1 && FIREBASE_CONFIG.appId && FIREBASE_CONFIG.appId.indexOf('PASTE_') === -1;
+      if (configOk && FIREBASE_CONFIG.databaseURL) {
         firebase.initializeApp(FIREBASE_CONFIG);
         firebaseDb = firebase.database();
       }
