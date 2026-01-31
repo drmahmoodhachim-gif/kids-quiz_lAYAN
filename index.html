@@ -273,6 +273,16 @@
       padding: 22px 48px;
       font-size: 1.4rem;
     }
+    .user-count {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #5c2d91;
+      margin: 12px 0 16px;
+      padding: 10px 16px;
+      background: #f0e6ff;
+      border-radius: 12px;
+      display: inline-block;
+    }
     .leaderboard-box {
       margin-top: 20px;
       padding: 16px;
@@ -298,6 +308,7 @@
     .leaderboard-list li:last-child { border-bottom: none; }
     .leaderboard-list .rank { font-weight: bold; color: #5c2d91; margin-right: 8px; }
     .leaderboard-list .entry-name { flex: 1; }
+    .leaderboard-list .entry-country { font-size: 0.9rem; color: #5c2d91; margin-left: 4px; }
     .leaderboard-list .entry-score { font-weight: bold; color: #2ecc71; }
     .leaderboard-list .entry-mode { font-size: 0.85rem; color: #888; }
     .name-input-wrap {
@@ -327,6 +338,7 @@
     .who-played-list { list-style: none; font-size: 0.95rem; max-height: 140px; overflow-y: auto; }
     .who-played-list li { padding: 4px 0; display: flex; align-items: center; gap: 8px; }
     .who-played-list .player-sticker { font-size: 1.2rem; }
+    .who-played-list .entry-country { font-size: 0.85rem; color: #166534; }
     .sticker-counts-box { margin-top: 10px; padding: 12px; background: #fef3c7; border-radius: 12px; text-align: left; }
     .sticker-counts-box h3 { font-size: 1rem; color: #92400e; margin-bottom: 6px; }
     .sticker-counts-list { font-size: 0.9rem; color: #555; }
@@ -441,6 +453,7 @@
         <button type="button" class="mode-btn mode-sports" id="btn-2players">👦👧 2 Players</button>
       </div>
       <p class="subtitle" data-i18n="pickCategory">Pick a category and have fun!</p>
+      <p class="user-count" id="start-user-count" aria-live="polite">👥 No one yet. Be the first!</p>
       <button class="mode-btn mode-countries" data-mode="countries">🌍 Countries<br><small>Capitals, flags & continents</small></button>
       <button class="mode-btn mode-history" data-mode="history">📜 History<br><small>Ancient & world history</small></button>
       <button class="mode-btn mode-animals" data-mode="animals">🐾 Animals<br><small>Wildlife & nature</small></button>
@@ -507,6 +520,10 @@
       <div class="name-input-wrap">
         <label for="player-name">Your name (for top scorers):</label>
         <input type="text" id="player-name" placeholder="e.g. Layan" maxlength="20" />
+      </div>
+      <div class="name-input-wrap">
+        <label for="player-country" data-i18n="whereFrom">Where are you from? (optional)</label>
+        <input type="text" id="player-country" placeholder="e.g. UAE, Dubai, USA" maxlength="30" />
       </div>
       <div class="sticker-picker">
         <label>Pick a funny sticker for your board:</label>
@@ -732,7 +749,11 @@
         winner: "Winner",
         tie: "It's a tie!",
         player1: "Player 1",
-        player2: "Player 2"
+        player2: "Player 2",
+        whereFrom: "Where are you from? (optional)",
+        userCountNone: "No one yet. Be the first!",
+        userCountOne: "1 person has played",
+        userCountMany: "{n} people have played"
       },
       ar: {
         introTitle: "🌟 لعبة اختبار الأطفال 🌟",
@@ -758,7 +779,11 @@
         winner: "الفائز",
         tie: "تعادل!",
         player1: "اللاعب ١",
-        player2: "اللاعب ٢"
+        player2: "اللاعب ٢",
+        whereFrom: "من أين أنت؟ (اختياري)",
+        userCountNone: "لا أحد بعد. كن الأول!",
+        userCountOne: "شخص واحد لعب",
+        userCountMany: "{n} أشخاص لعبوا"
       }
     };
 
@@ -801,6 +826,7 @@
     let timerInterval = null;
     let questionStartTime = 0;
     let secondsLeft = TIMER_SECONDS;
+    let lastStartPlayerCount = 0;
 
     function shuffle(arr) {
       const a = [...arr];
@@ -868,6 +894,7 @@
       if (nextBtn) nextBtn.textContent = L.nextQuestion;
       var pickPlayersEl = document.querySelector('[data-i18n="pickPlayers"]');
       if (pickPlayersEl && L.pickPlayers) pickPlayersEl.textContent = L.pickPlayers;
+      updateStartUserCount(lastStartPlayerCount === 0 ? [] : new Array(lastStartPlayerCount));
     }
     function setLang(lang) {
       currentLang = lang === 'ar' ? 'ar' : 'en';
@@ -1134,11 +1161,12 @@
       }).catch(function() { return getStickerCounts(); });
     }
 
-    function saveToLeaderboard(name, scoreVal, mode, sticker) {
+    function saveToLeaderboard(name, scoreVal, mode, sticker, country) {
       const nameTrim = (name || 'Player').trim().slice(0, 20) || 'Player';
+      const countryTrim = (country || '').trim().slice(0, 30) || '';
       const stickerVal = STICKERS.includes(sticker) ? sticker : STICKERS[0];
-      const entry = { name: nameTrim, score: scoreVal, mode: mode, date: Date.now(), sticker: stickerVal };
-      const playerEntry = { name: nameTrim, sticker: stickerVal, score: scoreVal, mode: mode, date: Date.now() };
+      const entry = { name: nameTrim, score: scoreVal, mode: mode, date: Date.now(), sticker: stickerVal, country: countryTrim };
+      const playerEntry = { name: nameTrim, sticker: stickerVal, score: scoreVal, mode: mode, date: Date.now(), country: countryTrim };
       if (useFirebase && firebaseDb) {
         firebaseDb.ref('quiz/leaderboard').push(entry);
         firebaseDb.ref('quiz/players').push(playerEntry);
@@ -1174,7 +1202,8 @@
         const li = document.createElement('li');
         const modeLabel = (currentLang === 'ar' ? (MODE_LABELS_AR[entry.mode] || entry.mode) : (MODE_LABELS[entry.mode] || entry.mode)) || '';
         const sticker = entry.sticker || '⭐';
-        li.innerHTML = '<span class="rank">#' + (i + 1) + '</span><span class="entry-name"><span class="player-sticker">' + sticker + '</span> ' + escapeHtml(entry.name) + (modeLabel ? ' <span class="entry-mode">· ' + escapeHtml(modeLabel) + '</span>' : '') + '</span><span class="entry-score">' + entry.score + '/10</span>';
+        const countryPart = (entry.country) ? ' <span class="entry-country">· 🌍 ' + escapeHtml(entry.country) + '</span>' : '';
+        li.innerHTML = '<span class="rank">#' + (i + 1) + '</span><span class="entry-name"><span class="player-sticker">' + sticker + '</span> ' + escapeHtml(entry.name) + countryPart + (modeLabel ? ' <span class="entry-mode">· ' + escapeHtml(modeLabel) + '</span>' : '') + '</span><span class="entry-score">' + entry.score + '/10</span>';
         listEl.appendChild(li);
       });
     }
@@ -1193,7 +1222,8 @@
       players.forEach(function(p) {
         const li = document.createElement('li');
         var modeLbl = currentLang === 'ar' ? (MODE_LABELS_AR[p.mode] || p.mode) : (MODE_LABELS[p.mode] || p.mode);
-        li.innerHTML = '<span class="player-sticker">' + (p.sticker || '⭐') + '</span><span>' + escapeHtml(p.name) + '</span><span class="entry-mode">' + (p.score + '/10 · ' + (modeLbl || '')) + '</span>';
+        var countryPart = (p.country) ? ' <span class="entry-country">🌍 ' + escapeHtml(p.country) + '</span>' : '';
+        li.innerHTML = '<span class="player-sticker">' + (p.sticker || '⭐') + '</span><span>' + escapeHtml(p.name) + countryPart + '</span><span class="entry-mode">' + (p.score + '/10 · ' + (modeLbl || '')) + '</span>';
         listEl.appendChild(li);
       });
     }
@@ -1253,6 +1283,15 @@
       }
     }
 
+    function updateStartUserCount(players) {
+      var el = document.getElementById('start-user-count');
+      if (!el) return;
+      var L = LANG[currentLang] || LANG.en;
+      var n = players ? players.length : 0;
+      var text = (n === 0) ? ('👥 ' + L.userCountNone) : (n === 1) ? ('👥 ' + L.userCountOne) : ('👥 ' + (L.userCountMany || '{n} people have played').replace('{n}', n));
+      el.textContent = text;
+    }
+
     function fetchAndRenderStartScreen() {
       updateScoresNotices();
       Promise.all([getLeaderboardAsync(), getPlayersAsync(), getStickerCountsAsync()]).then(function(r) {
@@ -1260,6 +1299,8 @@
         renderWhoPlayed('start-who-played-list', 'start-who-played-empty', r[1]);
         renderStickerCounts('start-sticker-counts-list', r[2]);
         renderBadges('start-badge-list');
+        lastStartPlayerCount = (r[1] && r[1].length) || 0;
+        updateStartUserCount(r[1]);
         showScreen('start-screen');
       });
     }
@@ -1309,6 +1350,7 @@
                   (currentLang === 'ar' ? '📚 حظ أوفر! الممارسة تصنع الفرق!' : '📚 Nice try! Practice makes perfect!');
         endMsg.textContent = msg;
         document.getElementById('player-name').value = '';
+        document.getElementById('player-country').value = '';
         selectedSticker = STICKERS[0];
         buildStickerPicker();
         endSaveBtn.textContent = L.saveScore;
@@ -1348,8 +1390,9 @@
 
     document.getElementById('save-score-btn').addEventListener('click', function() {
       const name = document.getElementById('player-name').value;
+      const country = document.getElementById('player-country').value;
       var effectiveScore = Math.min(10, score + totalBonus);
-      saveToLeaderboard(name, effectiveScore, currentMode, selectedSticker);
+      saveToLeaderboard(name, effectiveScore, currentMode, selectedSticker, country);
       document.getElementById('save-score-btn').textContent = currentLang === 'ar' ? '✅ تم الحفظ!' : '✅ Score saved!';
       fetchAndRenderEndScreenData();
     });
