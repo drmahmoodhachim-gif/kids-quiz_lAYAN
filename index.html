@@ -70,6 +70,18 @@
       background: linear-gradient(135deg, #ee0979, #ff6a00);
       color: #fff;
     }
+    .mode-animals {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      color: #333;
+    }
+    .mode-science {
+      background: linear-gradient(135deg, #00c6fb, #005bea);
+      color: #fff;
+    }
+    .mode-sports {
+      background: linear-gradient(135deg, #56ab2f, #a8e063);
+      color: #fff;
+    }
     .score-bar {
       display: flex;
       justify-content: space-between;
@@ -261,22 +273,70 @@
       padding: 22px 48px;
       font-size: 1.4rem;
     }
+    .leaderboard-box {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f8f5ff;
+      border-radius: 14px;
+      text-align: left;
+    }
+    .leaderboard-box h3 {
+      font-size: 1.1rem;
+      color: #5c2d91;
+      margin-bottom: 10px;
+    }
+    .leaderboard-list {
+      list-style: none;
+      font-size: 1rem;
+    }
+    .leaderboard-list li {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+    }
+    .leaderboard-list li:last-child { border-bottom: none; }
+    .leaderboard-list .rank { font-weight: bold; color: #5c2d91; margin-right: 8px; }
+    .leaderboard-list .entry-name { flex: 1; }
+    .leaderboard-list .entry-score { font-weight: bold; color: #2ecc71; }
+    .leaderboard-list .entry-mode { font-size: 0.85rem; color: #888; }
+    .name-input-wrap {
+      margin: 16px 0;
+    }
+    .name-input-wrap label { font-size: 1rem; color: #555; display: block; margin-bottom: 6px; }
+    .name-input-wrap input {
+      font-size: 1.1rem;
+      padding: 12px 16px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 200px;
+    }
+    .leaderboard-empty { color: #888; font-size: 0.95rem; }
   </style>
 </head>
 <body>
   <div class="container">
     <div id="intro-screen" class="screen active intro-screen">
       <h1 class="intro-title">🌟 Kids Quiz Game 🌟</h1>
-      <p class="intro-desc">A fun quiz for kids ages 6–10! Choose Countries or History, answer 10 questions, and see how many you get right. Have fun! 🎮</p>
+      <p class="intro-desc">A fun quiz for kids ages 6–10! Pick a category, answer 10 questions, and see how many you get right. Your scores are saved—try to reach the top! 🎮</p>
       <p class="intro-credit">✨ This game is made by Layan Amashhadani ✨</p>
       <button type="button" class="next-btn intro-btn" id="intro-play-btn">Let's Play! 🚀</button>
     </div>
 
     <div id="start-screen" class="screen">
       <h1>🌟 Kids Quiz Game 🌟</h1>
-      <p class="subtitle">Pick a topic and have fun!</p>
+      <p class="subtitle">Pick a category and have fun!</p>
       <button class="mode-btn mode-countries" data-mode="countries">🌍 Countries<br><small>Capitals, flags & continents</small></button>
       <button class="mode-btn mode-history" data-mode="history">📜 History<br><small>Ancient & world history</small></button>
+      <button class="mode-btn mode-animals" data-mode="animals">🐾 Animals<br><small>Wildlife & nature</small></button>
+      <button class="mode-btn mode-science" data-mode="science">🔬 Science<br><small>Space, nature & fun facts</small></button>
+      <button class="mode-btn mode-sports" data-mode="sports">⚽ Sports<br><small>Games & Olympics</small></button>
+      <div class="leaderboard-box" id="start-leaderboard">
+        <h3>🏆 Top scorers</h3>
+        <ul class="leaderboard-list" id="start-leaderboard-list"></ul>
+        <p class="leaderboard-empty" id="start-leaderboard-empty" style="display:none;">No scores yet. Play to be first!</p>
+      </div>
       <div class="share-section">
         <p class="share-label">📤 Share this quiz</p>
         <div class="share-btns">
@@ -304,6 +364,16 @@
       <h1>🎉 Quiz Complete! 🎉</h1>
       <p class="end-score" id="final-score">0 / 10</p>
       <p class="end-message" id="end-message"></p>
+      <div class="name-input-wrap">
+        <label for="player-name">Your name (for top scorers):</label>
+        <input type="text" id="player-name" placeholder="e.g. Layan" maxlength="20" />
+      </div>
+      <button type="button" class="next-btn" id="save-score-btn">💾 Save my score</button>
+      <div class="leaderboard-box" id="end-leaderboard">
+        <h3>🏆 Top scorers</h3>
+        <ul class="leaderboard-list" id="end-leaderboard-list"></ul>
+        <p class="leaderboard-empty" id="end-leaderboard-empty" style="display:none;">No scores yet.</p>
+      </div>
       <button id="restart-btn" class="restart-btn">🔄 Play Again</button>
       <div class="share-section">
         <p class="share-label">📤 Share this quiz</p>
@@ -363,8 +433,77 @@
         { q: "Who was the famous queen of Egypt? 👑", options: ["Nefertiti", "Cleopatra", "Hatshepsut", "Isis"], correct: 1 },
         { q: "What big event happened in 1969? 🚀", options: ["World War ended", "First moon landing", "Internet invented", "First airplane"], correct: 1 },
         { q: "Which civilization helped invent our calendar? 📅", options: ["Egyptians", "Romans", "Greeks", "Chinese"], correct: 1 }
+      ],
+      animals: [
+        { q: "What do bees make? 🐝", options: ["Milk", "Honey", "Butter", "Juice"], correct: 1 },
+        { q: "Which animal has a long trunk? 🐘", options: ["Lion", "Elephant", "Giraffe", "Bear"], correct: 1 },
+        { q: "Where do fish live? 🐟", options: ["In trees", "In water", "In caves", "In the sky"], correct: 1 },
+        { q: "What color is a flamingo? 🦩", options: ["Blue", "Green", "Pink", "Gray"], correct: 2 },
+        { q: "Which animal says 'moo'? 🐄", options: ["Sheep", "Pig", "Cow", "Horse"], correct: 2 },
+        { q: "How many legs does a spider have? 🕷️", options: ["Six", "Eight", "Ten", "Four"], correct: 1 },
+        { q: "Which bird cannot fly but runs fast? 🐧", options: ["Eagle", "Penguin", "Parrot", "Owl"], correct: 1 },
+        { q: "What do caterpillars turn into? 🐛", options: ["Bees", "Butterflies", "Spiders", "Ants"], correct: 1 },
+        { q: "Which animal has black and white stripes? 🦓", options: ["Lion", "Tiger", "Zebra", "Horse"], correct: 2 },
+        { q: "What do frogs eat? 🐸", options: ["Grass", "Insects", "Leaves", "Seeds"], correct: 1 },
+        { q: "Which animal is the tallest on land? 🦒", options: ["Elephant", "Giraffe", "Bear", "Horse"], correct: 1 },
+        { q: "Where do bats sleep during the day? 🦇", options: ["In water", "In trees upside down", "In sand", "In grass"], correct: 1 },
+        { q: "What is a baby dog called? 🐕", options: ["Cub", "Puppy", "Kitten", "Calf"], correct: 1 },
+        { q: "Which animal has a shell? 🐢", options: ["Rabbit", "Turtle", "Fox", "Deer"], correct: 1 },
+        { q: "What do ducks have that help them swim? 🦆", options: ["Fins", "Webbed feet", "Wings only", "Long legs"], correct: 1 },
+        { q: "Which animal hibernates in winter? 🐻", options: ["Lion", "Bear", "Monkey", "Kangaroo"], correct: 1 },
+        { q: "What is a group of lions called? 🦁", options: ["Flock", "Herd", "Pride", "Pack"], correct: 2 },
+        { q: "Which bird is a symbol of peace? 🕊️", options: ["Crow", "Dove", "Hawk", "Sparrow"], correct: 1 },
+        { q: "What color is a polar bear's skin? 🐻‍❄️", options: ["White", "Black", "Pink", "Brown"], correct: 1 }
+      ],
+      science: [
+        { q: "What planet do we live on? 🌍", options: ["Mars", "Earth", "Venus", "Jupiter"], correct: 1 },
+        { q: "How many legs does an insect have? 🐜", options: ["Four", "Six", "Eight", "Ten"], correct: 1 },
+        { q: "What do plants need to make food? 🌱", options: ["Moonlight", "Sunlight", "Fire", "Wind"], correct: 1 },
+        { q: "What is the closest star to Earth? ☀️", options: ["Moon", "Sun", "Mars", "North Star"], correct: 1 },
+        { q: "What do we breathe in? 💨", options: ["Carbon dioxide", "Oxygen", "Nitrogen", "Water"], correct: 1 },
+        { q: "What season comes after winter? 🌸", options: ["Summer", "Autumn", "Spring", "Winter again"], correct: 2 },
+        { q: "How many bones are in the human body? (about) 🦴", options: ["100", "206", "300", "50"], correct: 1 },
+        { q: "What is water in solid form called? ❄️", options: ["Steam", "Ice", "Mist", "Rain"], correct: 1 },
+        { q: "Which sense do we use with our nose? 👃", options: ["Hearing", "Smell", "Touch", "Taste"], correct: 1 },
+        { q: "What force pulls things to the ground? 🍎", options: ["Wind", "Gravity", "Magnetism", "Light"], correct: 1 },
+        { q: "How many planets orbit the Sun? 🪐", options: ["Five", "Six", "Eight", "Ten"], correct: 2 },
+        { q: "What do we call a baby frog? 🐸", options: ["Puppy", "Tadpole", "Cub", "Chick"], correct: 1 },
+        { q: "What is the largest organ on our body? 🧴", options: ["Heart", "Brain", "Skin", "Liver"], correct: 2 },
+        { q: "What do magnets attract? 🧲", options: ["Wood", "Plastic", "Iron", "Paper"], correct: 2 },
+        { q: "Where does rain come from? 🌧️", options: ["Underground", "Clouds", "Rivers", "Oceans only"], correct: 1 },
+        { q: "What is the Moon? 🌙", options: ["A star", "A planet", "A satellite", "A comet"], correct: 2 },
+        { q: "Which gas do plants take in? 🌿", options: ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"], correct: 1 },
+        { q: "What do we use to see very small things? 🔬", options: ["Telescope", "Microscope", "Camera", "Glasses"], correct: 1 },
+        { q: "What is the boiling point of water? (about) 🌡️", options: ["50°C", "100°C", "150°C", "200°C"], correct: 1 },
+        { q: "Which animal has the biggest heart? 🐋", options: ["Elephant", "Giraffe", "Blue whale", "Lion"], correct: 2 }
+      ],
+      sports: [
+        { q: "How many players are on a soccer team on the field? ⚽", options: ["9", "10", "11", "12"], correct: 2 },
+        { q: "In which sport do you use a racket? 🎾", options: ["Soccer", "Tennis", "Basketball", "Swimming"], correct: 1 },
+        { q: "What do you hit in baseball? ⚾", options: ["A ball with a bat", "A puck", "A shuttlecock", "A ball with a stick"], correct: 0 },
+        { q: "Where were the first modern Olympics held? 🏟️", options: ["Rome", "Paris", "Athens", "London"], correct: 2 },
+        { q: "How many rings are on the Olympic flag? 🏅", options: ["Three", "Four", "Five", "Six"], correct: 2 },
+        { q: "Which sport is played on ice with a puck? 🏒", options: ["Soccer", "Hockey", "Basketball", "Cricket"], correct: 1 },
+        { q: "What do swimmers wear on their feet? 🏊", options: ["Boots", "Flippers", "Shoes", "Socks"], correct: 1 },
+        { q: "In basketball, how many points is a free throw worth? 🏀", options: ["One", "Two", "Three", "Four"], correct: 0 },
+        { q: "Which country is famous for sumo wrestling? 🇯🇵", options: ["USA", "China", "Japan", "Brazil"], correct: 2 },
+        { q: "What do you ride in cycling? 🚴", options: ["A horse", "A bike", "A skateboard", "A scooter"], correct: 1 },
+        { q: "How many players are on a basketball team on the court? 🏀", options: ["4", "5", "6", "7"], correct: 1 },
+        { q: "Which sport uses a bow and arrow? 🏹", options: ["Fencing", "Archery", "Javelin", "Shot put"], correct: 1 },
+        { q: "What color is the jersey of the winner of the Tour de France? 🚴", options: ["Red", "Green", "Yellow", "Blue"], correct: 2 },
+        { q: "In which sport do you score a 'goal'? ⚽", options: ["Tennis", "Soccer", "Golf", "Cricket"], correct: 1 },
+        { q: "What do you hit in badminton? 🏸", options: ["A ball", "A shuttlecock", "A puck", "A ring"], correct: 1 },
+        { q: "Which sport is played in a pool? 🏊", options: ["Skiing", "Swimming", "Running", "Cycling"], correct: 1 },
+        { q: "How many Grand Slam tennis tournaments are there per year? 🎾", options: ["Two", "Three", "Four", "Five"], correct: 2 },
+        { q: "What is the name of the trophy in the soccer World Cup? 🏆", options: ["Olympic Cup", "Jules Rimet / FIFA World Cup", "Super Bowl", "Stanley Cup"], correct: 1 },
+        { q: "Which animal is the symbol of the Olympics? 🦅", options: ["Lion", "Eagle", "Bear", "Tiger"], correct: 1 },
+        { q: "In running, what is a 'marathon'? 🏃", options: ["A short race", "A long race (about 42 km)", "A relay", "A jump"], correct: 1 }
       ]
     };
+
+    const MODE_LABELS = { countries: "Countries", history: "History", animals: "Animals", science: "Science", sports: "Sports" };
+    const LEADERBOARD_KEY = 'kidsQuizLeaderboard';
+    const MAX_LEADERBOARD = 10;
 
     let currentMode = null;
     let currentQuestions = [];
@@ -452,6 +591,47 @@
       }
     }
 
+    function getLeaderboard() {
+      try {
+        const raw = localStorage.getItem(LEADERBOARD_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) { return []; }
+    }
+
+    function saveToLeaderboard(name, scoreVal, mode) {
+      const nameTrim = (name || 'Player').trim().slice(0, 20) || 'Player';
+      const list = getLeaderboard();
+      list.push({ name: nameTrim, score: scoreVal, mode: mode, date: Date.now() });
+      list.sort((a, b) => b.score - a.score);
+      const kept = list.slice(0, MAX_LEADERBOARD);
+      localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(kept));
+    }
+
+    function renderLeaderboard(listId, emptyId) {
+      const list = getLeaderboard();
+      const listEl = document.getElementById(listId);
+      const emptyEl = document.getElementById(emptyId);
+      if (!listEl) return;
+      listEl.innerHTML = '';
+      if (list.length === 0) {
+        if (emptyEl) { emptyEl.style.display = 'block'; emptyEl.textContent = 'No scores yet. Play to be first!'; }
+        return;
+      }
+      if (emptyEl) emptyEl.style.display = 'none';
+      list.forEach((entry, i) => {
+        const li = document.createElement('li');
+        const modeLabel = MODE_LABELS[entry.mode] || entry.mode || '';
+        li.innerHTML = '<span class="rank">#' + (i + 1) + '</span><span class="entry-name">' + escapeHtml(entry.name) + (modeLabel ? ' <span class="entry-mode">· ' + escapeHtml(modeLabel) + '</span>' : '') + '</span><span class="entry-score">' + entry.score + '/10</span>';
+        listEl.appendChild(li);
+      });
+    }
+
+    function escapeHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
     function showEndScreen() {
       document.getElementById('final-score').textContent = `${score} / 10`;
       let msg = score === 10 ? '🌟 Perfect! You are a superstar! 🌟' :
@@ -459,6 +639,8 @@
                 score >= 5 ? '💪 Good effort! Keep learning!' :
                 '📚 Nice try! Practice makes perfect!';
       document.getElementById('end-message').textContent = msg;
+      document.getElementById('player-name').value = '';
+      renderLeaderboard('end-leaderboard-list', 'end-leaderboard-empty');
       showScreen('end-screen');
     }
 
@@ -469,12 +651,20 @@
     document.getElementById('next-btn').addEventListener('click', nextQuestion);
 
     document.getElementById('restart-btn').addEventListener('click', () => {
+      renderLeaderboard('start-leaderboard-list', 'start-leaderboard-empty');
       showScreen('start-screen');
+    });
+
+    document.getElementById('save-score-btn').addEventListener('click', () => {
+      const name = document.getElementById('player-name').value;
+      saveToLeaderboard(name, score, currentMode);
+      renderLeaderboard('end-leaderboard-list', 'end-leaderboard-empty');
+      document.getElementById('save-score-btn').textContent = '✅ Score saved!';
     });
 
     // —— Share link (WhatsApp, Email, Copy) ——
     const SHARE_TITLE = '🌟 Kids Quiz Game – fun quiz for kids!';
-    const SHARE_TEXT = 'Try this fun kids quiz (Countries & History)! ';
+    const SHARE_TEXT = 'Try this fun kids quiz (Countries, History, Animals, Science, Sports)! ';
 
     function getShareUrl() {
       return window.location.href;
@@ -553,8 +743,11 @@
 
     setupShareButtons();
 
-    // Intro: "Let's Play!" shows mode selection
-    document.getElementById('intro-play-btn').addEventListener('click', () => showScreen('start-screen'));
+    // Intro: "Let's Play!" shows mode selection; show leaderboard on start screen
+    document.getElementById('intro-play-btn').addEventListener('click', () => {
+      renderLeaderboard('start-leaderboard-list', 'start-leaderboard-empty');
+      showScreen('start-screen');
+    });
   </script>
 </body>
 </html>
