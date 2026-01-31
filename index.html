@@ -313,6 +313,23 @@
       max-width: 200px;
     }
     .leaderboard-empty { color: #888; font-size: 0.95rem; }
+    .sticker-picker { margin: 14px 0; }
+    .sticker-picker label { font-size: 1rem; color: #555; display: block; margin-bottom: 8px; }
+    .sticker-options { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .sticker-btn {
+      font-size: 1.8rem; padding: 10px 14px; border: 3px solid #ddd; border-radius: 12px;
+      background: #f8f8f8; cursor: pointer; transition: all 0.2s;
+    }
+    .sticker-btn:hover { border-color: #9b6bb8; background: #f0e6ff; transform: scale(1.1); }
+    .sticker-btn.selected { border-color: #5c2d91; background: #e8e0f0; }
+    .who-played-box { margin-top: 16px; padding: 14px; background: #f0fdf4; border-radius: 14px; text-align: left; }
+    .who-played-box h3 { font-size: 1.05rem; color: #166534; margin-bottom: 8px; }
+    .who-played-list { list-style: none; font-size: 0.95rem; max-height: 140px; overflow-y: auto; }
+    .who-played-list li { padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+    .who-played-list .player-sticker { font-size: 1.2rem; }
+    .sticker-counts-box { margin-top: 10px; padding: 12px; background: #fef3c7; border-radius: 12px; text-align: left; }
+    .sticker-counts-box h3 { font-size: 1rem; color: #92400e; margin-bottom: 6px; }
+    .sticker-counts-list { font-size: 0.9rem; color: #555; }
   </style>
 </head>
 <body>
@@ -336,6 +353,15 @@
         <h3>🏆 Top scorers</h3>
         <ul class="leaderboard-list" id="start-leaderboard-list"></ul>
         <p class="leaderboard-empty" id="start-leaderboard-empty" style="display:none;">No scores yet. Play to be first!</p>
+      </div>
+      <div class="who-played-box" id="start-who-played">
+        <h3>👥 Who tried the quiz</h3>
+        <ul class="who-played-list" id="start-who-played-list"></ul>
+        <p class="leaderboard-empty" id="start-who-played-empty" style="display:none;">No one yet. Be the first!</p>
+      </div>
+      <div class="sticker-counts-box" id="start-sticker-counts">
+        <h3>😀 Sticker picks (how many chose each)</h3>
+        <div class="sticker-counts-list" id="start-sticker-counts-list"></div>
       </div>
       <div class="share-section">
         <p class="share-label">📤 Share this quiz</p>
@@ -368,11 +394,24 @@
         <label for="player-name">Your name (for top scorers):</label>
         <input type="text" id="player-name" placeholder="e.g. Layan" maxlength="20" />
       </div>
+      <div class="sticker-picker">
+        <label>Pick a funny sticker for your board:</label>
+        <div class="sticker-options" id="sticker-options"></div>
+      </div>
       <button type="button" class="next-btn" id="save-score-btn">💾 Save my score</button>
       <div class="leaderboard-box" id="end-leaderboard">
         <h3>🏆 Top scorers</h3>
         <ul class="leaderboard-list" id="end-leaderboard-list"></ul>
         <p class="leaderboard-empty" id="end-leaderboard-empty" style="display:none;">No scores yet.</p>
+      </div>
+      <div class="who-played-box" id="end-who-played">
+        <h3>👥 Who tried the quiz</h3>
+        <ul class="who-played-list" id="end-who-played-list"></ul>
+        <p class="leaderboard-empty" id="end-who-played-empty" style="display:none;">No one yet.</p>
+      </div>
+      <div class="sticker-counts-box" id="end-sticker-counts">
+        <h3>😀 Sticker picks (how many chose each)</h3>
+        <div class="sticker-counts-list" id="end-sticker-counts-list"></div>
       </div>
       <button id="restart-btn" class="restart-btn">🔄 Play Again</button>
       <div class="share-section">
@@ -503,7 +542,12 @@
 
     const MODE_LABELS = { countries: "Countries", history: "History", animals: "Animals", science: "Science", sports: "Sports" };
     const LEADERBOARD_KEY = 'kidsQuizLeaderboard';
+    const PLAYERS_KEY = 'kidsQuizPlayers';
+    const STICKER_COUNTS_KEY = 'kidsQuizStickerCounts';
     const MAX_LEADERBOARD = 10;
+    const MAX_PLAYERS_LIST = 50;
+    const STICKERS = ['🦁', '🐸', '🦄', '🎉', '⭐', '🏆', '🤓', '🧠', '🐶', '🐱', '🦋', '🌈', '🔥', '💪', '👑', '🎮', '🚀', '🍀', '🌻', '🦊'];
+    let selectedSticker = STICKERS[0];
 
     let currentMode = null;
     let currentQuestions = [];
@@ -598,13 +642,34 @@
       } catch (e) { return []; }
     }
 
-    function saveToLeaderboard(name, scoreVal, mode) {
+    function getPlayers() {
+      try {
+        const raw = localStorage.getItem(PLAYERS_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) { return []; }
+    }
+
+    function getStickerCounts() {
+      try {
+        const raw = localStorage.getItem(STICKER_COUNTS_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) { return {}; }
+    }
+
+    function saveToLeaderboard(name, scoreVal, mode, sticker) {
       const nameTrim = (name || 'Player').trim().slice(0, 20) || 'Player';
+      const stickerVal = STICKERS.includes(sticker) ? sticker : STICKERS[0];
       const list = getLeaderboard();
-      list.push({ name: nameTrim, score: scoreVal, mode: mode, date: Date.now() });
+      list.push({ name: nameTrim, score: scoreVal, mode: mode, date: Date.now(), sticker: stickerVal });
       list.sort((a, b) => b.score - a.score);
       const kept = list.slice(0, MAX_LEADERBOARD);
       localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(kept));
+      const players = getPlayers();
+      players.unshift({ name: nameTrim, sticker: stickerVal, score: scoreVal, mode: mode, date: Date.now() });
+      localStorage.setItem(PLAYERS_KEY, JSON.stringify(players.slice(0, MAX_PLAYERS_LIST)));
+      const counts = getStickerCounts();
+      counts[stickerVal] = (counts[stickerVal] || 0) + 1;
+      localStorage.setItem(STICKER_COUNTS_KEY, JSON.stringify(counts));
     }
 
     function renderLeaderboard(listId, emptyId) {
@@ -621,8 +686,58 @@
       list.forEach((entry, i) => {
         const li = document.createElement('li');
         const modeLabel = MODE_LABELS[entry.mode] || entry.mode || '';
-        li.innerHTML = '<span class="rank">#' + (i + 1) + '</span><span class="entry-name">' + escapeHtml(entry.name) + (modeLabel ? ' <span class="entry-mode">· ' + escapeHtml(modeLabel) + '</span>' : '') + '</span><span class="entry-score">' + entry.score + '/10</span>';
+        const sticker = entry.sticker || '⭐';
+        li.innerHTML = '<span class="rank">#' + (i + 1) + '</span><span class="entry-name"><span class="player-sticker">' + sticker + '</span> ' + escapeHtml(entry.name) + (modeLabel ? ' <span class="entry-mode">· ' + escapeHtml(modeLabel) + '</span>' : '') + '</span><span class="entry-score">' + entry.score + '/10</span>';
         listEl.appendChild(li);
+      });
+    }
+
+    function renderWhoPlayed(listId, emptyId) {
+      const players = getPlayers();
+      const listEl = document.getElementById(listId);
+      const emptyEl = document.getElementById(emptyId);
+      if (!listEl) return;
+      listEl.innerHTML = '';
+      if (players.length === 0) {
+        if (emptyEl) { emptyEl.style.display = 'block'; emptyEl.textContent = 'No one yet. Be the first!'; }
+        return;
+      }
+      if (emptyEl) emptyEl.style.display = 'none';
+      players.forEach(function(p) {
+        const li = document.createElement('li');
+        li.innerHTML = '<span class="player-sticker">' + (p.sticker || '⭐') + '</span><span>' + escapeHtml(p.name) + '</span><span class="entry-mode">' + (p.score + '/10 · ' + (MODE_LABELS[p.mode] || p.mode || '')) + '</span>';
+        listEl.appendChild(li);
+      });
+    }
+
+    function renderStickerCounts(containerId) {
+      const counts = getStickerCounts();
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      const entries = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
+      if (entries.length === 0) {
+        el.innerHTML = '<span class="leaderboard-empty">No sticker picks yet.</span>';
+        return;
+      }
+      el.innerHTML = entries.map(function(e) { return e[0] + ' × ' + e[1]; }).join(' &nbsp; ');
+    }
+
+    function buildStickerPicker() {
+      const container = document.getElementById('sticker-options');
+      if (!container) return;
+      container.innerHTML = '';
+      STICKERS.forEach(function(s) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'sticker-btn' + (s === selectedSticker ? ' selected' : '');
+        btn.textContent = s;
+        btn.setAttribute('aria-label', 'Pick ' + s);
+        btn.addEventListener('click', function() {
+          selectedSticker = s;
+          container.querySelectorAll('.sticker-btn').forEach(function(b) { b.classList.remove('selected'); });
+          btn.classList.add('selected');
+        });
+        container.appendChild(btn);
       });
     }
 
@@ -640,7 +755,12 @@
                 '📚 Nice try! Practice makes perfect!';
       document.getElementById('end-message').textContent = msg;
       document.getElementById('player-name').value = '';
+      selectedSticker = STICKERS[0];
+      buildStickerPicker();
       renderLeaderboard('end-leaderboard-list', 'end-leaderboard-empty');
+      renderWhoPlayed('end-who-played-list', 'end-who-played-empty');
+      renderStickerCounts('end-sticker-counts-list');
+      document.getElementById('save-score-btn').textContent = '💾 Save my score';
       showScreen('end-screen');
     }
 
@@ -652,13 +772,17 @@
 
     document.getElementById('restart-btn').addEventListener('click', () => {
       renderLeaderboard('start-leaderboard-list', 'start-leaderboard-empty');
+      renderWhoPlayed('start-who-played-list', 'start-who-played-empty');
+      renderStickerCounts('start-sticker-counts-list');
       showScreen('start-screen');
     });
 
     document.getElementById('save-score-btn').addEventListener('click', () => {
       const name = document.getElementById('player-name').value;
-      saveToLeaderboard(name, score, currentMode);
+      saveToLeaderboard(name, score, currentMode, selectedSticker);
       renderLeaderboard('end-leaderboard-list', 'end-leaderboard-empty');
+      renderWhoPlayed('end-who-played-list', 'end-who-played-empty');
+      renderStickerCounts('end-sticker-counts-list');
       document.getElementById('save-score-btn').textContent = '✅ Score saved!';
     });
 
@@ -743,9 +867,11 @@
 
     setupShareButtons();
 
-    // Intro: "Let's Play!" shows mode selection; show leaderboard on start screen
+    // Intro: "Let's Play!" shows mode selection; show leaderboard and who played on start screen
     document.getElementById('intro-play-btn').addEventListener('click', () => {
       renderLeaderboard('start-leaderboard-list', 'start-leaderboard-empty');
+      renderWhoPlayed('start-who-played-list', 'start-who-played-empty');
+      renderStickerCounts('start-sticker-counts-list');
       showScreen('start-screen');
     });
   </script>
