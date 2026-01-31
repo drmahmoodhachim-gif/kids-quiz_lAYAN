@@ -82,6 +82,18 @@
       background: linear-gradient(135deg, #56ab2f, #a8e063);
       color: #fff;
     }
+    .mode-harrypotter {
+      background: linear-gradient(135deg, #4a148c, #7b1fa2);
+      color: #fff;
+    }
+    .mode-movies {
+      background: linear-gradient(135deg, #e91e63, #f06292);
+      color: #fff;
+    }
+    .mode-space {
+      background: linear-gradient(135deg, #0d47a1, #42a5f5);
+      color: #fff;
+    }
     .score-bar {
       display: flex;
       justify-content: space-between;
@@ -454,11 +466,14 @@
       </div>
       <p class="subtitle" data-i18n="pickCategory">Pick a category and have fun!</p>
       <p class="user-count" id="start-user-count" aria-live="polite">👥 No one yet. Be the first!</p>
-      <button class="mode-btn mode-countries" data-mode="countries">🌍 Countries<br><small>Capitals, flags & continents</small></button>
-      <button class="mode-btn mode-history" data-mode="history">📜 History<br><small>Ancient & world history</small></button>
-      <button class="mode-btn mode-animals" data-mode="animals">🐾 Animals<br><small>Wildlife & nature</small></button>
-      <button class="mode-btn mode-science" data-mode="science">🔬 Science<br><small>Space, nature & fun facts</small></button>
-      <button class="mode-btn mode-sports" data-mode="sports">⚽ Sports<br><small>Games & Olympics</small></button>
+      <button class="mode-btn mode-countries" data-mode="countries">Countries<br><small>Capitals, flags & continents</small></button>
+      <button class="mode-btn mode-history" data-mode="history">History<br><small>Ancient & world history</small></button>
+      <button class="mode-btn mode-animals" data-mode="animals">Animals<br><small>Wildlife & nature</small></button>
+      <button class="mode-btn mode-science" data-mode="science">Science<br><small>Nature & fun facts</small></button>
+      <button class="mode-btn mode-sports" data-mode="sports">Sports<br><small>Games & Olympics</small></button>
+      <button class="mode-btn mode-harrypotter" data-mode="harryPotter">Harry Potter<br><small>Hogwarts & magic</small></button>
+      <button class="mode-btn mode-movies" data-mode="movies">Movies<br><small>Disney & cartoons</small></button>
+      <button class="mode-btn mode-space" data-mode="space">Space<br><small>Planets & stars</small></button>
       <div class="leaderboard-box" id="start-leaderboard">
         <h3>🏆 Top scorers</h3>
         <div class="global-scores-notice" id="notice-global" style="display:none;">🌐 Scores from everyone (all devices & locations)</div>
@@ -689,11 +704,77 @@
         { q: "What is the name of the trophy in the soccer World Cup? 🏆", options: ["Olympic Cup", "Jules Rimet / FIFA World Cup", "Super Bowl", "Stanley Cup"], correct: 1 },
         { q: "Which animal is the symbol of the Olympics? 🦅", options: ["Lion", "Eagle", "Bear", "Tiger"], correct: 1 },
         { q: "In running, what is a 'marathon'? 🏃", options: ["A short race", "A long race (about 42 km)", "A relay", "A jump"], correct: 1 }
+      ],
+      harryPotter: [
+        { q: "What is the name of Harry's school?", options: ["Hogwarts", "Beauxbatons", "Durmstrang", "Ilvermorny"], correct: 0 },
+        { q: "Who is Harry's best friend?", options: ["Draco", "Ron Weasley", "Neville", "Seamus"], correct: 1 },
+        { q: "What animal is Harry's pet owl?", options: ["An owl", "A cat", "A toad", "A rat"], correct: 0 },
+        { q: "What is the name of Harry's owl?", options: ["Errol", "Hedwig", "Pigwidgeon", "Scabbers"], correct: 1 },
+        { q: "Which subject does Professor Snape teach?", options: ["Defence", "Potions", "Transfiguration", "Herbology"], correct: 1 },
+        { q: "What do you call a person who can do magic?", options: ["Muggle", "Wizard or witch", "Giant", "Goblin"], correct: 1 },
+        { q: "What is the name of the train that takes students to Hogwarts?", options: ["Hogwarts Express", "Knight Bus", "Flying Car", "Thestral"], correct: 0 },
+        { q: "Who is the headmaster of Hogwarts in the first books?", options: ["Snape", "Dumbledore", "McGonagall", "Hagrid"], correct: 1 },
+        { q: "What game do wizards play on broomsticks?", options: ["Quidditch", "Soccer", "Basketball", "Rugby"], correct: 0 },
+        { q: "What is Hermione's last name?", options: ["Weasley", "Granger", "Potter", "Longbottom"], correct: 1 },
+        { q: "Where does Harry live before he goes to Hogwarts?", options: ["With the Dursleys", "With the Weasleys", "An orphanage", "With Hagrid"], correct: 0 },
+        { q: "What is a Muggle?", options: ["A bad wizard", "A person with no magic", "A type of spell", "A magical creature"], correct: 1 },
+        { q: "Which house is Harry in?", options: ["Slytherin", "Hufflepuff", "Ravenclaw", "Gryffindor"], correct: 3 },
+        { q: "What is Hagrid's job at Hogwarts?", options: ["Teacher", "Care of Magical Creatures keeper", "Guard", "Chef"], correct: 1 },
+        { q: "What do wizards use to cast spells?", options: ["A wand", "A stick", "Their hands only", "A book"], correct: 0 },
+        { q: "Who is Harry's enemy in the books?", options: ["Draco", "Voldemort", "Snape", "Dudley"], correct: 1 },
+        { q: "What is the street where the Dursleys live?", options: ["Grimmauld Place", "Diagon Alley", "Privet Drive", "Hogsmeade"], correct: 2 },
+        { q: "Which creature can only be seen if you have seen death?", options: ["Phoenix", "Thestral", "Hippogriff", "Dragon"], correct: 1 },
+        { q: "What is Ron's pet in the first book?", options: ["An owl", "A cat", "A rat named Scabbers", "A toad"], correct: 2 },
+        { q: "What colour is the Gryffindor house?", options: ["Green", "Blue", "Red and gold", "Yellow"], correct: 2 }
+      ],
+      movies: [
+        { q: "In Frozen, what is the name of Elsa's sister?", options: ["Anna", "Rapunzel", "Cinderella", "Ariel"], correct: 0 },
+        { q: "What do the toys in Toy Story do when humans are not looking?", options: ["Sleep", "Come to life", "Break", "Nothing"], correct: 1 },
+        { q: "What type of animal is Simba in The Lion King?", options: ["Tiger", "Lion", "Leopard", "Cheetah"], correct: 1 },
+        { q: "In Finding Nemo, what kind of fish is Nemo?", options: ["Goldfish", "Clownfish", "Angelfish", "Shark"], correct: 1 },
+        { q: "What does Cinderella lose at midnight?", options: ["Her crown", "Her glass slipper", "Her dress", "Her carriage"], correct: 1 },
+        { q: "Who is the snowman in Frozen?", options: ["Sven", "Olaf", "Kristoff", "Hans"], correct: 1 },
+        { q: "What is the name of the cowboy in Toy Story?", options: ["Buzz", "Woody", "Rex", "Slinky"], correct: 1 },
+        { q: "In The Little Mermaid, what does Ariel want to be?", options: ["A fish", "A human", "A bird", "A witch"], correct: 1 },
+        { q: "What is the name of the dragon in How to Train Your Dragon?", options: ["Toothless", "Smaug", "Draco", "Spyro"], correct: 0 },
+        { q: "Who is Shrek's best friend?", options: ["Donkey", "Puss in Boots", "Dragon", "Fiona"], correct: 0 },
+        { q: "In Moana, what is the ocean?", options: ["A character that helps her", "Just water", "A monster", "A god"], correct: 0 },
+        { q: "What does Aladdin ride?", options: ["A horse", "A carpet", "A camel", "A genie"], correct: 1 },
+        { q: "Who is the villain in The Lion King?", options: ["Simba", "Scar", "Mufasa", "Timon"], correct: 1 },
+        { q: "In Cars, what is Lightning McQueen?", options: ["A plane", "A racing car", "A truck", "A boat"], correct: 1 },
+        { q: "What does the genie give Aladdin?", options: ["Three wishes", "One wish", "A lamp", "A palace"], correct: 0 },
+        { q: "Who is Nemo's dad?", options: ["Dory", "Marlin", "Gill", "Crush"], correct: 1 },
+        { q: "In Coco, what is the Land of the Dead?", options: ["A dream", "A place where spirits go", "A city", "A school"], correct: 1 },
+        { q: "What animal is Dumbo?", options: ["A dog", "An elephant", "A bear", "A rabbit"], correct: 1 },
+        { q: "In Zootopia, what animal is Officer Judy Hopps?", options: ["A fox", "A rabbit", "A lion", "A sheep"], correct: 1 },
+        { q: "What is the name of the robot in WALL-E?", options: ["EVE", "WALL-E", "Both", "Neither"], correct: 2 }
+      ],
+      space: [
+        { q: "What planet do we live on?", options: ["Mars", "Earth", "Venus", "Jupiter"], correct: 1 },
+        { q: "What is the closest star to Earth?", options: ["Moon", "Sun", "North Star", "Mars"], correct: 1 },
+        { q: "What is the Moon?", options: ["A star", "A planet", "A satellite of Earth", "A comet"], correct: 2 },
+        { q: "How many planets orbit the Sun?", options: ["Five", "Six", "Eight", "Nine"], correct: 2 },
+        { q: "Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], correct: 1 },
+        { q: "What is the largest planet in our solar system?", options: ["Earth", "Saturn", "Jupiter", "Neptune"], correct: 2 },
+        { q: "What do we call a shooting star?", options: ["A comet", "A meteor", "A planet", "A satellite"], correct: 1 },
+        { q: "Who was the first person to walk on the Moon?", options: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "John Glenn"], correct: 1 },
+        { q: "What is the name of our galaxy?", options: ["Andromeda", "Milky Way", "Orion", "Pinwheel"], correct: 1 },
+        { q: "What does an astronaut wear in space?", options: ["A suit", "A spacesuit", "Normal clothes", "A cape"], correct: 1 },
+        { q: "Which planet has rings around it?", options: ["Mars", "Jupiter", "Saturn", "Earth"], correct: 2 },
+        { q: "What is the Sun made of mostly?", options: ["Fire", "Gas", "Rock", "Ice"], correct: 1 },
+        { q: "How long does it take Earth to go around the Sun?", options: ["One day", "One week", "One month", "One year"], correct: 3 },
+        { q: "What is the name of the first satellite sent to space?", options: ["Apollo", "Sputnik", "Hubble", "Voyager"], correct: 1 },
+        { q: "Which planet is closest to the Sun?", options: ["Venus", "Mercury", "Earth", "Mars"], correct: 1 },
+        { q: "What do we use to look at stars?", options: ["Microscope", "Telescope", "Camera", "Binoculars only"], correct: 1 },
+        { q: "What is a black hole?", options: ["A dark planet", "A place where gravity is very strong", "A type of star", "A cloud"], correct: 1 },
+        { q: "What is the name of the rover that went to Mars?", options: ["Apollo", "Curiosity", "Hubble", "Sputnik"], correct: 1 },
+        { q: "Which planet is the coldest?", options: ["Mars", "Neptune", "Uranus", "Pluto or Neptune"], correct: 3 },
+        { q: "What shape is the Earth?", options: ["Flat", "A sphere (round)", "A cube", "A disc"], correct: 1 }
       ]
     };
 
-    const MODE_LABELS = { countries: "Countries", history: "History", animals: "Animals", science: "Science", sports: "Sports" };
-    const MODE_LABELS_AR = { countries: "دول", history: "تاريخ", animals: "حيوانات", science: "علوم", sports: "رياضة" };
+    const MODE_LABELS = { countries: "Countries", history: "History", animals: "Animals", science: "Science", sports: "Sports", harryPotter: "Harry Potter", movies: "Movies", space: "Space" };
+    const MODE_LABELS_AR = { countries: "دول", history: "تاريخ", animals: "حيوانات", science: "علوم", sports: "رياضة", harryPotter: "هاري بوتر", movies: "أفلام", space: "فضاء" };
     const LEADERBOARD_KEY = 'kidsQuizLeaderboard';
     const PLAYERS_KEY = 'kidsQuizPlayers';
     const STICKER_COUNTS_KEY = 'kidsQuizStickerCounts';
@@ -862,11 +943,18 @@
       } catch (e) {}
     }
 
+    function stripEmojis(str) {
+      if (!str || typeof str !== 'string') return str;
+      return str.replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F1E0}-\u{1F1FF}\u{FE00}-\u{FE0F}\u{200D}\u{2300}-\u{23FF}\u{2B50}\u{231A}-\u{231B}\u{25AA}-\u{25FE}\u{2614}-\u{2615}\u{2648}-\u{2653}\u{267F}\u{2693}\u{26A1}\u{26AA}-\u{26AB}\u{26BD}-\u{26BE}\u{26C4}-\u{26C5}\u{26CE}\u{26D4}\u{26EA}\u{26F2}-\u{26FD}\u{2702}\u{2705}\u{2708}-\u{270D}\u{270F}\u{2712}\u{2714}\u{2716}\u{271D}\u{2721}\u{2728}\u{2733}-\u{2734}\u{2744}\u{2747}\u{274C}\u{274E}\u{2753}-\u{2755}\u{2757}\u{2763}-\u{2764}\u{2795}-\u{2797}\u{27A1}\u{27B0}\u{27BF}\u{2934}-\u{2935}\u{2B05}-\u{2B07}\u{2B1B}-\u{2B1C}\u{2B55}\u{3030}\u{303D}\u{3297}\u{3299}]/gu, '').replace(/\s+/g, ' ').trim();
+    }
+
     function speakText(text, langCode) {
       if (!voiceOn || !text) return;
       if (typeof speechSynthesis === 'undefined') return;
       speechSynthesis.cancel();
-      var u = new SpeechSynthesisUtterance(text);
+      var clean = stripEmojis(text);
+      if (!clean) return;
+      var u = new SpeechSynthesisUtterance(clean);
       u.volume = 1; u.rate = 0.9; u.pitch = 1;
       var lang = langCode === 'ar' ? 'ar-SA' : 'en-US';
       u.lang = lang;
@@ -1029,15 +1117,17 @@
       }
 
       const q = currentQuestions[currentIndex];
+      var questionText = stripEmojis(q.q);
+      var optionsClean = q.options.map(function(o) { return stripEmojis(o); });
       document.getElementById('question-number').textContent = (currentLang === 'ar' ? 'سؤال ' : 'Question ') + (currentIndex + 1) + (currentLang === 'ar' ? ' من ١٠' : ' of 10');
-      document.getElementById('question-text').textContent = q.q;
+      document.getElementById('question-text').textContent = questionText;
       document.getElementById('question-counter').textContent = (currentLang === 'ar' ? 'سؤال ' : 'Question ') + (currentIndex + 1) + (currentLang === 'ar' ? ' من ١٠' : ' of 10');
       document.getElementById('feedback').style.display = 'none';
       document.getElementById('next-btn').style.display = 'none';
 
       const container = document.getElementById('options-container');
       container.innerHTML = '';
-      q.options.forEach((opt, i) => {
+      optionsClean.forEach((opt, i) => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
         btn.textContent = opt;
@@ -1052,7 +1142,7 @@
         if (secondsLeft <= 0) { clearTimer(); handleTimeUp(); }
       }, 1000);
 
-      if (voiceOn) setTimeout(function() { speakText(q.q, currentLang); }, 300);
+      if (voiceOn) setTimeout(function() { speakText(questionText, currentLang); }, 300);
     }
 
     function selectOption(selectedIndex, btn) {
@@ -1135,7 +1225,10 @@
         const list = val ? Object.values(val) : [];
         list.sort(function(a, b) { return (b.score || 0) - (a.score || 0); });
         return list.slice(0, MAX_LEADERBOARD);
-      }).catch(function() { return getLeaderboard(); });
+      }).catch(function(err) {
+        console.warn('Firebase leaderboard load failed. Check Rules & network.', err);
+        return [];
+      });
     }
 
     function getPlayersAsync() {
@@ -1145,7 +1238,10 @@
         const list = val ? Object.values(val) : [];
         list.sort(function(a, b) { return (b.date || 0) - (a.date || 0); });
         return list.slice(0, MAX_PLAYERS_LIST);
-      }).catch(function() { return getPlayers(); });
+      }).catch(function(err) {
+        console.warn('Firebase players load failed. Check Rules & network.', err);
+        return [];
+      });
     }
 
     function getStickerCountsAsync() {
@@ -1158,7 +1254,7 @@
           if (idx >= 0 && idx < STICKERS.length) out[STICKERS[idx]] = val[k];
         });
         return out;
-      }).catch(function() { return getStickerCounts(); });
+      }).catch(function() { return useFirebase ? {} : getStickerCounts(); });
     }
 
     function saveToLeaderboard(name, scoreVal, mode, sticker, country) {
