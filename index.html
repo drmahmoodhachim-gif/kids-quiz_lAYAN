@@ -330,20 +330,114 @@
     .sticker-counts-box { margin-top: 10px; padding: 12px; background: #fef3c7; border-radius: 12px; text-align: left; }
     .sticker-counts-box h3 { font-size: 1rem; color: #92400e; margin-bottom: 6px; }
     .sticker-counts-list { font-size: 0.9rem; color: #555; }
+    /* Tablet / mobile friendly */
+    @media (max-width: 768px) {
+      body { padding: 12px; }
+      .container { padding: 24px 20px; border-radius: 20px; }
+      h1 { font-size: 1.8rem; }
+      .intro-screen .intro-title { font-size: 2rem; }
+      .mode-btn { padding: 20px 16px; font-size: 1.25rem; min-height: 56px; }
+      .option-btn { padding: 18px 14px; font-size: 1.15rem; min-height: 52px; }
+      .next-btn, .restart-btn { padding: 16px 32px; font-size: 1.2rem; min-height: 48px; }
+      .share-btn { padding: 12px 18px; font-size: 1rem; min-height: 44px; }
+      .question-text { font-size: 1.35rem; }
+      .end-score { font-size: 2.5rem; }
+    }
+    @media (max-width: 480px) {
+      body { padding: 8px; }
+      .container { padding: 18px 14px; }
+      h1 { font-size: 1.5rem; }
+      .subtitle { font-size: 1rem; }
+      .mode-btn { padding: 18px 12px; font-size: 1.15rem; min-height: 52px; }
+      .option-btn { min-height: 48px; font-size: 1.05rem; }
+      .score-bar { flex-wrap: wrap; gap: 8px; font-size: 1rem; }
+      .sticker-btn { font-size: 1.5rem; padding: 12px; min-width: 44px; min-height: 44px; }
+    }
+    /* Touch: no hover-only states */
+    @media (hover: none) {
+      .mode-btn:active, .option-btn:active, .next-btn:active, .restart-btn:active, .share-btn:active, .sticker-btn:active {
+        transform: scale(0.98);
+      }
+    }
+    /* RTL for Arabic */
+    body.rtl { direction: rtl; text-align: right; }
+    body.rtl .container { text-align: right; }
+    body.rtl .option-btn { text-align: right; }
+    body.rtl .leaderboard-box, body.rtl .who-played-box, body.rtl .sticker-counts-box { text-align: right; }
+    /* Sound/voice toggles */
+    .settings-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; margin: 12px 0; }
+    .settings-row button { padding: 10px 16px; font-size: 1rem; border-radius: 10px; border: 2px solid #ddd; background: #f5f5f5; cursor: pointer; }
+    .settings-row button.on { background: #e8f5e9; border-color: #4caf50; }
+    .lang-switch { margin-bottom: 12px; }
+    .lang-switch button { padding: 10px 20px; margin: 0 4px; font-size: 1rem; border-radius: 10px; border: 2px solid #5c2d91; background: #fff; color: #5c2d91; cursor: pointer; }
+    .lang-switch button.active { background: #5c2d91; color: #fff; }
+    /* Badges */
+    .badges-box { margin-top: 16px; padding: 14px; background: #fff8e1; border-radius: 14px; text-align: left; }
+    .badges-box h3 { font-size: 1.05rem; color: #e65100; margin-bottom: 8px; }
+    .badge-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge { padding: 8px 12px; border-radius: 10px; font-size: 0.9rem; background: #ffe0b2; color: #bf360c; }
+    .badge.locked { opacity: 0.5; background: #eee; color: #999; }
+    .level-badge { display: inline-block; padding: 6px 14px; border-radius: 12px; font-weight: bold; margin: 8px 0; font-size: 1.1rem; }
+    .level-bronze { background: #cd7f32; color: #fff; }
+    .level-silver { background: #c0c0c0; color: #333; }
+    .level-gold { background: #ffd700; color: #333; }
+    .level-star { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+    /* Timer */
+    .timer-wrap { font-size: 1.2rem; font-weight: bold; color: #5c2d91; }
+    .timer-wrap.low { color: #e74c3c; }
+    .timer-wrap .bonus { font-size: 0.9rem; color: #2ecc71; margin-left: 6px; }
+    /* Two-player */
+    .mode-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .mode-row .mode-btn { flex: 1; min-width: 140px; }
+    .mode-row .mode-btn.selected { box-shadow: 0 0 0 3px #5c2d91; }
+    .player-turn { font-size: 1.1rem; font-weight: bold; color: #5c2d91; margin-bottom: 8px; }
+    .two-player-scores { display: flex; justify-content: space-around; margin: 16px 0; flex-wrap: wrap; gap: 12px; }
+    .two-player-scores .p-score { padding: 12px 20px; border-radius: 14px; font-size: 1.2rem; font-weight: bold; }
+    .two-player-scores .p1 { background: #e3f2fd; color: #1565c0; }
+    .two-player-scores .p2 { background: #fce4ec; color: #c2185b; }
+    .winner-msg { font-size: 1.3rem; font-weight: bold; margin: 12px 0; color: #2e7d32; }
+    /* Language toggle prominent */
+    .lang-toggle-box { margin-bottom: 16px; padding: 12px; background: #f5f5f5; border-radius: 14px; }
+    .lang-toggle-box .lang-label { font-size: 0.95rem; color: #666; margin-bottom: 8px; }
+    .lang-toggle-box .lang-switch { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .lang-toggle-box .lang-switch button { padding: 12px 24px; font-size: 1.1rem; border-radius: 12px; min-width: 100px; }
   </style>
 </head>
 <body>
   <div class="container">
     <div id="intro-screen" class="screen active intro-screen">
-      <h1 class="intro-title">🌟 Kids Quiz Game 🌟</h1>
-      <p class="intro-desc">A fun quiz for kids ages 6–10! Pick a category, answer 10 questions, and see how many you get right. Your scores are saved—try to reach the top! 🎮</p>
+      <div class="lang-toggle-box">
+        <div class="lang-label">🇦🇪 Language / اللغة 🇬🇧</div>
+        <div class="lang-switch">
+          <button type="button" id="lang-en" class="active">🇬🇧 English</button>
+          <button type="button" id="lang-ar">🇦🇪 العربية</button>
+        </div>
+      </div>
+      <h1 class="intro-title" data-i18n="introTitle">🌟 Kids Quiz Game 🌟</h1>
+      <p class="intro-desc" data-i18n="introDesc">A fun quiz for kids ages 6–10! Pick a category, answer 10 questions, and see how many you get right. Your scores are saved—try to reach the top! 🎮</p>
       <p class="intro-credit">✨ This game is made by Layan Amashhadani ✨</p>
-      <button type="button" class="next-btn intro-btn" id="intro-play-btn">Let's Play! 🚀</button>
+      <div class="settings-row">
+        <button type="button" id="sound-toggle" title="Sound effects">🔊 Sound</button>
+        <button type="button" id="voice-toggle" title="Read questions aloud">🗣️ Voice</button>
+      </div>
+      <button type="button" class="next-btn intro-btn" id="intro-play-btn" data-i18n="letsPlay">Let's Play! 🚀</button>
     </div>
 
     <div id="start-screen" class="screen">
+      <div class="lang-toggle-box">
+        <div class="lang-label">🇦🇪 Language / اللغة 🇬🇧</div>
+        <div class="lang-switch">
+          <button type="button" id="lang-en-start">🇬🇧 English</button>
+          <button type="button" id="lang-ar-start">🇦🇪 العربية</button>
+        </div>
+      </div>
       <h1>🌟 Kids Quiz Game 🌟</h1>
-      <p class="subtitle">Pick a category and have fun!</p>
+      <p class="subtitle" data-i18n="pickPlayers">Choose players, then category!</p>
+      <div class="mode-row">
+        <button type="button" class="mode-btn mode-countries selected" id="btn-1player">👤 1 Player</button>
+        <button type="button" class="mode-btn mode-sports" id="btn-2players">👦👧 2 Players</button>
+      </div>
+      <p class="subtitle" data-i18n="pickCategory">Pick a category and have fun!</p>
       <button class="mode-btn mode-countries" data-mode="countries">🌍 Countries<br><small>Capitals, flags & continents</small></button>
       <button class="mode-btn mode-history" data-mode="history">📜 History<br><small>Ancient & world history</small></button>
       <button class="mode-btn mode-animals" data-mode="animals">🐾 Animals<br><small>Wildlife & nature</small></button>
@@ -363,6 +457,10 @@
         <h3>😀 Sticker picks (how many chose each)</h3>
         <div class="sticker-counts-list" id="start-sticker-counts-list"></div>
       </div>
+      <div class="badges-box" id="start-badges">
+        <h3 data-i18n="myBadges">🏅 My badges</h3>
+        <div class="badge-list" id="start-badge-list"></div>
+      </div>
       <div class="share-section">
         <p class="share-label">📤 Share this quiz</p>
         <div class="share-btns">
@@ -376,9 +474,11 @@
 
     <div id="quiz-screen" class="screen">
       <div class="score-bar">
-        <span>❤️ Score: <span id="score">0</span> / 10</span>
+        <span>❤️ Score: <span id="score">0</span><span id="bonus-display"></span> / 10</span>
+        <span class="timer-wrap" id="timer-wrap">⏱️ <span id="timer-sec">15</span>s</span>
         <span id="question-counter">Question 1 of 10</span>
       </div>
+      <p class="player-turn" id="player-turn" style="display:none;"></p>
       <p class="question-number" id="question-number"></p>
       <p class="question-text" id="question-text"></p>
       <div id="options-container"></div>
@@ -388,6 +488,13 @@
 
     <div id="end-screen" class="screen">
       <h1>🎉 Quiz Complete! 🎉</h1>
+      <div id="end-two-player" style="display:none;">
+        <div class="two-player-scores">
+          <span class="p-score p1" id="end-p1-score">Player 1: 0</span>
+          <span class="p-score p2" id="end-p2-score">Player 2: 0</span>
+        </div>
+        <p class="winner-msg" id="winner-msg"></p>
+      </div>
       <p class="end-score" id="final-score">0 / 10</p>
       <p class="end-message" id="end-message"></p>
       <div class="name-input-wrap">
@@ -398,7 +505,12 @@
         <label>Pick a funny sticker for your board:</label>
         <div class="sticker-options" id="sticker-options"></div>
       </div>
-      <button type="button" class="next-btn" id="save-score-btn">💾 Save my score</button>
+      <p class="level-badge level-bronze" id="end-level-badge" style="display:none;"></p>
+      <div class="badges-box" id="end-badges">
+        <h3 data-i18n="myBadges">🏅 My badges</h3>
+        <div class="badge-list" id="end-badge-list"></div>
+      </div>
+      <button type="button" class="next-btn" id="save-score-btn" data-i18n="saveScore">💾 Save my score</button>
       <div class="leaderboard-box" id="end-leaderboard">
         <h3>🏆 Top scorers</h3>
         <ul class="leaderboard-list" id="end-leaderboard-list"></ul>
@@ -427,6 +539,8 @@
   </div>
   <div class="copy-toast" id="copy-toast">🔗 Link copied!</div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
   <script>
     const QUESTIONS = {
       countries: [
@@ -471,7 +585,21 @@
         { q: "What did people use to write on in Ancient Rome? 📜", options: ["Paper", "Wax tablets and scrolls", "Computers", "Stone only"], correct: 1 },
         { q: "Who was the famous queen of Egypt? 👑", options: ["Nefertiti", "Cleopatra", "Hatshepsut", "Isis"], correct: 1 },
         { q: "What big event happened in 1969? 🚀", options: ["World War ended", "First moon landing", "Internet invented", "First airplane"], correct: 1 },
-        { q: "Which civilization helped invent our calendar? 📅", options: ["Egyptians", "Romans", "Greeks", "Chinese"], correct: 1 }
+        { q: "Which civilization helped invent our calendar? 📅", options: ["Egyptians", "Romans", "Greeks", "Chinese"], correct: 1 },
+        { q: "What was the main writing of Ancient Egypt? 📜", options: ["Letters", "Hieroglyphics", "Numbers", "Drawings only"], correct: 1 },
+        { q: "Who was the pharaoh who built many monuments? 🇪🇬", options: ["Cleopatra", "Ramses II", "Tutankhamun", "Nefertiti"], correct: 1 },
+        { q: "What did the Romans call their soldiers? ⚔️", options: ["Knights", "Legionaries", "Samurai", "Vikings"], correct: 1 },
+        { q: "Which empire built the Great Wall? 🧱", options: ["Romans", "Chinese", "Greeks", "Egyptians"], correct: 1 },
+        { q: "What was the Silk Road? 🛤️", options: ["A river", "A trade route", "A wall", "A city"], correct: 1 },
+        { q: "Who ruled Ancient Rome as emperor? 🏛️", options: ["Caesar", "Pharaoh", "Sultan", "King only"], correct: 0 },
+        { q: "What did Ancient Greeks create that we still use today? 🎭", options: ["Theatre", "Cars", "Phones", "TV"], correct: 0 },
+        { q: "When did the First World War start? 🌍", options: ["1914", "1939", "1945", "1900"], correct: 0 },
+        { q: "What did people in the Stone Age use for tools? 🪨", options: ["Metal", "Stone", "Plastic", "Wood only"], correct: 1 },
+        { q: "Which sea did the Romans call 'Mare Nostrum'? 🌊", options: ["Atlantic", "Mediterranean", "Red Sea", "Indian Ocean"], correct: 1 },
+        { q: "Who was the first man in space? 🚀", options: ["Neil Armstrong", "Yuri Gagarin", "John Glenn", "Buzz Aldrin"], correct: 1 },
+        { q: "What did Medieval knights fight in? ⚔️", options: ["Tanks", "Armor", "Planes", "Ships"], correct: 1 },
+        { q: "Which empire had sultans? 🕌", options: ["Roman", "Ottoman", "Egyptian", "Greek"], correct: 1 },
+        { q: "What did explorers use to find direction? 🧭", options: ["Compass", "Clock", "Map only", "Sun only"], correct: 0 }
       ],
       animals: [
         { q: "What do bees make? 🐝", options: ["Milk", "Honey", "Butter", "Juice"], correct: 1 },
@@ -541,6 +669,7 @@
     };
 
     const MODE_LABELS = { countries: "Countries", history: "History", animals: "Animals", science: "Science", sports: "Sports" };
+    const MODE_LABELS_AR = { countries: "دول", history: "تاريخ", animals: "حيوانات", science: "علوم", sports: "رياضة" };
     const LEADERBOARD_KEY = 'kidsQuizLeaderboard';
     const PLAYERS_KEY = 'kidsQuizPlayers';
     const STICKER_COUNTS_KEY = 'kidsQuizStickerCounts';
@@ -549,11 +678,122 @@
     const STICKERS = ['🦁', '🐸', '🦄', '🎉', '⭐', '🏆', '🤓', '🧠', '🐶', '🐱', '🦋', '🌈', '🔥', '💪', '👑', '🎮', '🚀', '🍀', '🌻', '🦊'];
     let selectedSticker = STICKERS[0];
 
+    // Firebase: paste your config from Firebase Console so EVERYONE sees the same top scorers and user count.
+    // 1) Go to https://console.firebase.google.com → Create project → Build → Realtime Database → Create (test mode).
+    // 2) Project settings (gear) → Your apps → Add web app → Copy the config object here.
+    // 3) In Realtime Database → Rules, set: { "rules": { "quiz": { ".read": true, ".write": true } } } then Publish.
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDummyReplaceWithYourOwnFromFirebaseConsole",
+      authDomain: "your-project.firebaseapp.com",
+      databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+      projectId: "your-project",
+      storageBucket: "your-project.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abc123"
+    };
+    let firebaseDb = null;
+    try {
+      if (typeof firebase !== 'undefined' && FIREBASE_CONFIG.databaseURL && FIREBASE_CONFIG.databaseURL.indexOf('your-project') === -1) {
+        firebase.initializeApp(FIREBASE_CONFIG);
+        firebaseDb = firebase.database();
+      }
+    } catch (e) {}
+    const useFirebase = !!firebaseDb;
+
+    const LANG = {
+      en: {
+        introTitle: "🌟 Kids Quiz Game 🌟",
+        introDesc: "A fun quiz for kids ages 6–10! Pick a category, answer 10 questions, and see how many you get right. Your scores are saved—try to reach the top! 🎮",
+        letsPlay: "Let's Play! 🚀",
+        pickCategory: "Pick a category and have fun!",
+        saveScore: "💾 Save my score",
+        myBadges: "🏅 My badges",
+        correctMsg: "🎉 Correct! Great job!",
+        wrongMsg: "❌ Try again next time!",
+        nextQuestion: "Next Question ➡️",
+        playAgain: "🔄 Play Again",
+        topScorers: "🏆 Top scorers",
+        whoTried: "👥 Who tried the quiz",
+        noScoresYet: "No scores yet. Play to be first!",
+        noOneYet: "No one yet. Be the first!",
+        sound: "🔊 Sound",
+        voice: "🗣️ Voice",
+        pickPlayers: "Choose players, then category!",
+        player1Turn: "👦 Player 1's turn",
+        player2Turn: "👧 Player 2's turn",
+        bonus: "bonus",
+        winner: "Winner",
+        tie: "It's a tie!",
+        player1: "Player 1",
+        player2: "Player 2"
+      },
+      ar: {
+        introTitle: "🌟 لعبة اختبار الأطفال 🌟",
+        introDesc: "اختبار ممتع للأطفال ٦–١٠ سنوات! اختر فئة، أجب عن ١٠ أسئلة، وحاول الوصول للأعلى! 🎮",
+        letsPlay: "يلا نلعب! 🚀",
+        pickCategory: "اختر فئة واستمتع!",
+        saveScore: "💾 حفظ نتيجتي",
+        myBadges: "🏅 شاراتي",
+        correctMsg: "🎉 صح! أحسنت!",
+        wrongMsg: "❌ حظ أوفر next time!",
+        nextQuestion: "السؤال التالي ➡️",
+        playAgain: "🔄 لعب مرة أخرى",
+        topScorers: "🏆 أعلى النتائج",
+        whoTried: "👥 من جرب الاختبار",
+        noScoresYet: "لا نتائج بعد. كن الأول!",
+        noOneYet: "لا أحد بعد. كن الأول!",
+        sound: "🔊 صوت",
+        voice: "🗣️ صوت",
+        pickPlayers: "اختر اللاعبين ثم الفئة!",
+        player1Turn: "👦 دور اللاعب ١",
+        player2Turn: "👧 دور اللاعب ٢",
+        bonus: "مكافأة",
+        winner: "الفائز",
+        tie: "تعادل!",
+        player1: "اللاعب ١",
+        player2: "اللاعب ٢"
+      }
+    };
+
+    const TIMER_SECONDS = 15;
+    const BONUS_PER_SECONDS_LEFT = 0.5;
+    const MAX_BONUS_PER_QUESTION = 5;
+
+    const LEVELS = [
+      { min: 0, max: 3, name: "Bronze", nameAr: "برونزي", cls: "level-bronze" },
+      { min: 4, max: 6, name: "Silver", nameAr: "فضي", cls: "level-silver" },
+      { min: 7, max: 9, name: "Gold", nameAr: "ذهبي", cls: "level-gold" },
+      { min: 10, max: 10, name: "Star", nameAr: "نجمة", cls: "level-star" }
+    ];
+
+    const BADGES = [
+      { id: "first_game", en: "First Game", ar: "أول لعبة", icon: "🎮", check: function(stats) { return stats.gamesPlayed >= 1; } },
+      { id: "perfect", en: "Perfect 10/10", ar: "١٠/١٠ ممتاز", icon: "⭐", check: function(stats) { return stats.bestScore >= 10; } },
+      { id: "five_games", en: "5 Games", ar: "٥ ألعاب", icon: "🏅", check: function(stats) { return stats.gamesPlayed >= 5; } },
+      { id: "history_master", en: "History Master", ar: "خبير تاريخ", icon: "📜", check: function(stats) { return stats.historyPerfect; } },
+      { id: "countries_master", en: "Countries Master", ar: "خبير دول", icon: "🌍", check: function(stats) { return stats.countriesPerfect; } },
+      { id: "ten_games", en: "10 Games", ar: "١٠ ألعاب", icon: "🌟", check: function(stats) { return stats.gamesPlayed >= 10; } }
+    ];
+    const BADGES_KEY = 'kidsQuizBadges';
+    const GAMES_PLAYED_KEY = 'kidsQuizGamesPlayed';
+    const STATS_KEY = 'kidsQuizStats';
+
+    let currentLang = (localStorage.getItem('kidsQuizLang') || 'en').slice(0, 2);
+    let soundOn = localStorage.getItem('kidsQuizSound') !== 'false';
+    let voiceOn = localStorage.getItem('kidsQuizVoice') === 'true';
     let currentMode = null;
     let currentQuestions = [];
     let currentIndex = 0;
     let score = 0;
+    let totalBonus = 0;
     let answered = false;
+    let twoPlayerMode = false;
+    let player1Score = 0;
+    let player2Score = 0;
+    let currentPlayer = 1;
+    let timerInterval = null;
+    let questionStartTime = 0;
+    let secondsLeft = TIMER_SECONDS;
 
     function shuffle(arr) {
       const a = [...arr];
@@ -564,9 +804,120 @@
       return a;
     }
 
+    function playSoundCorrect() {
+      if (!soundOn) return;
+      try {
+        var ctx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = ctx.createOscillator();
+        var g = ctx.createGain();
+        osc.connect(g); g.connect(ctx.destination);
+        osc.frequency.value = 523; osc.type = 'sine';
+        g.gain.setValueAtTime(0.2, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2);
+      } catch (e) {}
+    }
+    function playSoundWrong() {
+      if (!soundOn) return;
+      try {
+        var ctx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = ctx.createOscillator();
+        var g = ctx.createGain();
+        osc.connect(g); g.connect(ctx.destination);
+        osc.frequency.value = 200; osc.type = 'sawtooth';
+        g.gain.setValueAtTime(0.15, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
+      } catch (e) {}
+    }
+
+    function speakText(text, langCode) {
+      if (!voiceOn || !text) return;
+      if (typeof speechSynthesis === 'undefined') return;
+      speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.volume = 1; u.rate = 0.9; u.pitch = 1;
+      var lang = langCode === 'ar' ? 'ar-SA' : 'en-US';
+      u.lang = lang;
+      speechSynthesis.speak(u);
+    }
+
+    function applyLang() {
+      var L = LANG[currentLang] || LANG.en;
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var k = el.getAttribute('data-i18n');
+        if (L[k]) el.textContent = L[k];
+      });
+      document.body.classList.toggle('rtl', currentLang === 'ar');
+      document.documentElement.lang = currentLang === 'ar' ? 'ar' : 'en';
+      var soundBtn = document.getElementById('sound-toggle');
+      var voiceBtn = document.getElementById('voice-toggle');
+      if (soundBtn) { soundBtn.textContent = (LANG[currentLang] || LANG.en).sound; soundBtn.classList.toggle('on', soundOn); }
+      if (voiceBtn) { voiceBtn.textContent = (LANG[currentLang] || LANG.en).voice; voiceBtn.classList.toggle('on', voiceOn); }
+      document.querySelectorAll('.lang-switch button').forEach(function(b) {
+        var isEn = b.id === 'lang-en' || b.id === 'lang-en-start';
+        var isAr = b.id === 'lang-ar' || b.id === 'lang-ar-start';
+        b.classList.toggle('active', (isEn && currentLang === 'en') || (isAr && currentLang === 'ar'));
+      });
+      var nextBtn = document.getElementById('next-btn');
+      if (nextBtn) nextBtn.textContent = L.nextQuestion;
+      var pickPlayersEl = document.querySelector('[data-i18n="pickPlayers"]');
+      if (pickPlayersEl && L.pickPlayers) pickPlayersEl.textContent = L.pickPlayers;
+    }
+    function setLang(lang) {
+      currentLang = lang === 'ar' ? 'ar' : 'en';
+      localStorage.setItem('kidsQuizLang', currentLang);
+      applyLang();
+    }
+
+    function getLevel(scoreVal) {
+      for (var i = LEVELS.length - 1; i >= 0; i--) if (scoreVal >= LEVELS[i].min && scoreVal <= LEVELS[i].max) return LEVELS[i];
+      return LEVELS[0];
+    }
+    function getStats() {
+      try {
+        var raw = localStorage.getItem(STATS_KEY);
+        var s = raw ? JSON.parse(raw) : { gamesPlayed: 0, bestScore: 0, historyPerfect: false, countriesPerfect: false };
+        var gp = parseInt(localStorage.getItem(GAMES_PLAYED_KEY), 10) || 0;
+        s.gamesPlayed = Math.max(s.gamesPlayed || 0, gp);
+        return s;
+      } catch (e) { return { gamesPlayed: 0, bestScore: 0, historyPerfect: false, countriesPerfect: false }; }
+    }
+    function getUnlockedBadges() {
+      try { return JSON.parse(localStorage.getItem(BADGES_KEY) || '[]'); } catch (e) { return []; }
+    }
+    function checkAndAwardBadges(scoreVal, mode) {
+      var stats = getStats();
+      stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
+      try { localStorage.setItem(GAMES_PLAYED_KEY, String(stats.gamesPlayed)); } catch (e) {}
+      if (scoreVal > (stats.bestScore || 0)) stats.bestScore = scoreVal;
+      if (mode === 'history' && scoreVal === 10) stats.historyPerfect = true;
+      if (mode === 'countries' && scoreVal === 10) stats.countriesPerfect = true;
+      try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch (e) {}
+      var unlocked = getUnlockedBadges();
+      BADGES.forEach(function(b) {
+        if (unlocked.indexOf(b.id) >= 0) return;
+        if (b.check(stats)) unlocked.push(b.id);
+      });
+      localStorage.setItem(BADGES_KEY, JSON.stringify(unlocked));
+    }
+    function renderBadges(containerId) {
+      var el = document.getElementById(containerId);
+      if (!el) return;
+      var unlocked = getUnlockedBadges();
+      var L = LANG[currentLang] || LANG.en;
+      el.innerHTML = BADGES.map(function(b) {
+        var has = unlocked.indexOf(b.id) >= 0;
+        var label = currentLang === 'ar' ? b.ar : b.en;
+        return '<span class="badge ' + (has ? '' : 'locked') + '" title="' + escapeHtml(label) + '">' + b.icon + ' ' + label + '</span>';
+      }).join('');
+    }
+
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
+    }
+
+    function clearTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     }
 
     function startQuiz(mode) {
@@ -574,18 +925,79 @@
       currentQuestions = shuffle(QUESTIONS[mode]).slice(0, 10);
       currentIndex = 0;
       score = 0;
+      totalBonus = 0;
       answered = false;
-      document.getElementById('score').textContent = '0';
+      player1Score = 0;
+      player2Score = 0;
+      currentPlayer = 1;
+      clearTimer();
+      var turnEl = document.getElementById('player-turn');
+      var bonusEl = document.getElementById('bonus-display');
+      if (twoPlayerMode) {
+        turnEl.style.display = 'block';
+        bonusEl.textContent = '';
+        updateScoreDisplay();
+      } else {
+        turnEl.style.display = 'none';
+        document.getElementById('score').textContent = '0';
+        bonusEl.textContent = '';
+      }
       showScreen('quiz-screen');
       showQuestion();
     }
 
+    function updateScoreDisplay() {
+      var L = LANG[currentLang] || LANG.en;
+      if (twoPlayerMode) {
+        document.getElementById('score').textContent = '';
+        document.getElementById('bonus-display').textContent = '  👦 ' + player1Score + ' | 👧 ' + player2Score;
+      } else {
+        document.getElementById('score').textContent = score;
+        document.getElementById('bonus-display').textContent = totalBonus > 0 ? ' +' + totalBonus + ' ' + L.bonus : '';
+      }
+    }
+
+    function handleTimeUp() {
+      if (answered) return;
+      answered = true;
+      clearTimer();
+      var q = currentQuestions[currentIndex];
+      var buttons = document.querySelectorAll('.option-btn');
+      buttons.forEach(function(b) { b.disabled = true; });
+      buttons[q.correct].classList.add('correct');
+      var L = LANG[currentLang] || LANG.en;
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback wrong-msg';
+      fb.textContent = currentLang === 'ar' ? '⏱️ انتهى الوقت! ' + L.wrongMsg : '⏱️ Time\'s up! ' + L.wrongMsg;
+      fb.style.display = 'block';
+      playSoundWrong();
+      if (twoPlayerMode) currentPlayer = currentPlayer === 1 ? 2 : 1;
+      document.getElementById('next-btn').style.display = 'inline-block';
+      document.getElementById('timer-wrap').style.display = 'none';
+    }
+
     function showQuestion() {
       answered = false;
+      secondsLeft = TIMER_SECONDS;
+      questionStartTime = Date.now();
+      clearTimer();
+      var timerEl = document.getElementById('timer-wrap');
+      var timerSecEl = document.getElementById('timer-sec');
+      timerEl.style.display = 'inline-block';
+      timerEl.classList.remove('low');
+      timerSecEl.textContent = secondsLeft;
+
+      var L = LANG[currentLang] || LANG.en;
+      var turnEl = document.getElementById('player-turn');
+      if (twoPlayerMode) {
+        turnEl.textContent = currentPlayer === 1 ? L.player1Turn : L.player2Turn;
+        turnEl.style.display = 'block';
+      }
+
       const q = currentQuestions[currentIndex];
-      document.getElementById('question-number').textContent = `Question ${currentIndex + 1} of 10`;
+      document.getElementById('question-number').textContent = (currentLang === 'ar' ? 'سؤال ' : 'Question ') + (currentIndex + 1) + (currentLang === 'ar' ? ' من ١٠' : ' of 10');
       document.getElementById('question-text').textContent = q.q;
-      document.getElementById('question-counter').textContent = `Question ${currentIndex + 1} of 10`;
+      document.getElementById('question-counter').textContent = (currentLang === 'ar' ? 'سؤال ' : 'Question ') + (currentIndex + 1) + (currentLang === 'ar' ? ' من ١٠' : ' of 10');
       document.getElementById('feedback').style.display = 'none';
       document.getElementById('next-btn').style.display = 'none';
 
@@ -598,31 +1010,57 @@
         btn.addEventListener('click', () => selectOption(i, btn));
         container.appendChild(btn);
       });
+
+      timerInterval = setInterval(function() {
+        secondsLeft--;
+        timerSecEl.textContent = secondsLeft;
+        if (secondsLeft <= 5) timerEl.classList.add('low');
+        if (secondsLeft <= 0) { clearTimer(); handleTimeUp(); }
+      }, 1000);
+
+      if (voiceOn) setTimeout(function() { speakText(q.q, currentLang); }, 300);
     }
 
     function selectOption(selectedIndex, btn) {
       if (answered) return;
       answered = true;
+      clearTimer();
+      document.getElementById('timer-wrap').style.display = 'none';
+
       const q = currentQuestions[currentIndex];
       const buttons = document.querySelectorAll('.option-btn');
       buttons.forEach(b => b.disabled = true);
+      var L = LANG[currentLang] || LANG.en;
 
+      var bonus = 0;
       if (selectedIndex === q.correct) {
-        score++;
-        document.getElementById('score').textContent = score;
+        bonus = Math.min(MAX_BONUS_PER_QUESTION, Math.floor(secondsLeft * BONUS_PER_SECONDS_LEFT));
+        if (twoPlayerMode) {
+          if (currentPlayer === 1) player1Score += 1 + bonus; else player2Score += 1 + bonus;
+        } else {
+          score++;
+          totalBonus += bonus;
+        }
         btn.classList.add('correct');
+        playSoundCorrect();
         const fb = document.getElementById('feedback');
         fb.className = 'feedback correct-msg';
-        fb.textContent = '🎉 Correct! Great job!';
+        fb.textContent = L.correctMsg + (bonus > 0 ? ' +' + bonus + ' ' + L.bonus + '!' : '');
         fb.style.display = 'block';
+        if (voiceOn) speakText(L.correctMsg, currentLang);
+        if (twoPlayerMode) currentPlayer = currentPlayer === 1 ? 2 : 1;
       } else {
         btn.classList.add('wrong');
         buttons[q.correct].classList.add('correct');
+        playSoundWrong();
         const fb = document.getElementById('feedback');
         fb.className = 'feedback wrong-msg';
-        fb.textContent = '❌ Try again next time!';
+        fb.textContent = L.wrongMsg;
         fb.style.display = 'block';
+        if (voiceOn) speakText(L.wrongMsg, currentLang);
+        if (twoPlayerMode) currentPlayer = currentPlayer === 1 ? 2 : 1;
       }
+      updateScoreDisplay();
       document.getElementById('next-btn').style.display = 'inline-block';
     }
 
@@ -656,24 +1094,66 @@
       } catch (e) { return {}; }
     }
 
+    function getLeaderboardAsync() {
+      if (!useFirebase || !firebaseDb) return Promise.resolve(getLeaderboard());
+      return firebaseDb.ref('quiz/leaderboard').once('value').then(function(snap) {
+        const val = snap.val();
+        const list = val ? Object.values(val) : [];
+        list.sort(function(a, b) { return (b.score || 0) - (a.score || 0); });
+        return list.slice(0, MAX_LEADERBOARD);
+      }).catch(function() { return getLeaderboard(); });
+    }
+
+    function getPlayersAsync() {
+      if (!useFirebase || !firebaseDb) return Promise.resolve(getPlayers());
+      return firebaseDb.ref('quiz/players').once('value').then(function(snap) {
+        const val = snap.val();
+        const list = val ? Object.values(val) : [];
+        list.sort(function(a, b) { return (b.date || 0) - (a.date || 0); });
+        return list.slice(0, MAX_PLAYERS_LIST);
+      }).catch(function() { return getPlayers(); });
+    }
+
+    function getStickerCountsAsync() {
+      if (!useFirebase || !firebaseDb) return Promise.resolve(getStickerCounts());
+      return firebaseDb.ref('quiz/stickerCounts').once('value').then(function(snap) {
+        var val = snap.val() || {};
+        var out = {};
+        Object.keys(val).forEach(function(k) {
+          var idx = parseInt(k, 10);
+          if (idx >= 0 && idx < STICKERS.length) out[STICKERS[idx]] = val[k];
+        });
+        return out;
+      }).catch(function() { return getStickerCounts(); });
+    }
+
     function saveToLeaderboard(name, scoreVal, mode, sticker) {
       const nameTrim = (name || 'Player').trim().slice(0, 20) || 'Player';
       const stickerVal = STICKERS.includes(sticker) ? sticker : STICKERS[0];
+      const entry = { name: nameTrim, score: scoreVal, mode: mode, date: Date.now(), sticker: stickerVal };
+      const playerEntry = { name: nameTrim, sticker: stickerVal, score: scoreVal, mode: mode, date: Date.now() };
+      if (useFirebase && firebaseDb) {
+        firebaseDb.ref('quiz/leaderboard').push(entry);
+        firebaseDb.ref('quiz/players').push(playerEntry);
+        var stickerIdx = STICKERS.indexOf(stickerVal);
+        if (stickerIdx < 0) stickerIdx = 0;
+        firebaseDb.ref('quiz/stickerCounts/' + stickerIdx).transaction(function(current) { return (current || 0) + 1; });
+        return;
+      }
       const list = getLeaderboard();
-      list.push({ name: nameTrim, score: scoreVal, mode: mode, date: Date.now(), sticker: stickerVal });
+      list.push(entry);
       list.sort((a, b) => b.score - a.score);
-      const kept = list.slice(0, MAX_LEADERBOARD);
-      localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(kept));
+      localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(list.slice(0, MAX_LEADERBOARD)));
       const players = getPlayers();
-      players.unshift({ name: nameTrim, sticker: stickerVal, score: scoreVal, mode: mode, date: Date.now() });
+      players.unshift(playerEntry);
       localStorage.setItem(PLAYERS_KEY, JSON.stringify(players.slice(0, MAX_PLAYERS_LIST)));
       const counts = getStickerCounts();
       counts[stickerVal] = (counts[stickerVal] || 0) + 1;
       localStorage.setItem(STICKER_COUNTS_KEY, JSON.stringify(counts));
     }
 
-    function renderLeaderboard(listId, emptyId) {
-      const list = getLeaderboard();
+    function renderLeaderboard(listId, emptyId, listOverride) {
+      const list = listOverride !== undefined ? listOverride : getLeaderboard();
       const listEl = document.getElementById(listId);
       const emptyEl = document.getElementById(emptyId);
       if (!listEl) return;
@@ -685,15 +1165,15 @@
       if (emptyEl) emptyEl.style.display = 'none';
       list.forEach((entry, i) => {
         const li = document.createElement('li');
-        const modeLabel = MODE_LABELS[entry.mode] || entry.mode || '';
+        const modeLabel = (currentLang === 'ar' ? (MODE_LABELS_AR[entry.mode] || entry.mode) : (MODE_LABELS[entry.mode] || entry.mode)) || '';
         const sticker = entry.sticker || '⭐';
         li.innerHTML = '<span class="rank">#' + (i + 1) + '</span><span class="entry-name"><span class="player-sticker">' + sticker + '</span> ' + escapeHtml(entry.name) + (modeLabel ? ' <span class="entry-mode">· ' + escapeHtml(modeLabel) + '</span>' : '') + '</span><span class="entry-score">' + entry.score + '/10</span>';
         listEl.appendChild(li);
       });
     }
 
-    function renderWhoPlayed(listId, emptyId) {
-      const players = getPlayers();
+    function renderWhoPlayed(listId, emptyId, playersOverride) {
+      const players = playersOverride !== undefined ? playersOverride : getPlayers();
       const listEl = document.getElementById(listId);
       const emptyEl = document.getElementById(emptyId);
       if (!listEl) return;
@@ -705,13 +1185,14 @@
       if (emptyEl) emptyEl.style.display = 'none';
       players.forEach(function(p) {
         const li = document.createElement('li');
-        li.innerHTML = '<span class="player-sticker">' + (p.sticker || '⭐') + '</span><span>' + escapeHtml(p.name) + '</span><span class="entry-mode">' + (p.score + '/10 · ' + (MODE_LABELS[p.mode] || p.mode || '')) + '</span>';
+        var modeLbl = currentLang === 'ar' ? (MODE_LABELS_AR[p.mode] || p.mode) : (MODE_LABELS[p.mode] || p.mode);
+        li.innerHTML = '<span class="player-sticker">' + (p.sticker || '⭐') + '</span><span>' + escapeHtml(p.name) + '</span><span class="entry-mode">' + (p.score + '/10 · ' + (modeLbl || '')) + '</span>';
         listEl.appendChild(li);
       });
     }
 
-    function renderStickerCounts(containerId) {
-      const counts = getStickerCounts();
+    function renderStickerCounts(containerId, countsOverride) {
+      const counts = countsOverride !== undefined ? countsOverride : getStickerCounts();
       const el = document.getElementById(containerId);
       if (!el) return;
       const entries = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
@@ -747,44 +1228,124 @@
       return div.innerHTML;
     }
 
-    function showEndScreen() {
-      document.getElementById('final-score').textContent = `${score} / 10`;
-      let msg = score === 10 ? '🌟 Perfect! You are a superstar! 🌟' :
-                score >= 7 ? '👍 Awesome job! You know a lot!' :
-                score >= 5 ? '💪 Good effort! Keep learning!' :
-                '📚 Nice try! Practice makes perfect!';
-      document.getElementById('end-message').textContent = msg;
-      document.getElementById('player-name').value = '';
-      selectedSticker = STICKERS[0];
-      buildStickerPicker();
-      renderLeaderboard('end-leaderboard-list', 'end-leaderboard-empty');
-      renderWhoPlayed('end-who-played-list', 'end-who-played-empty');
-      renderStickerCounts('end-sticker-counts-list');
-      document.getElementById('save-score-btn').textContent = '💾 Save my score';
-      showScreen('end-screen');
+    function fetchAndRenderStartScreen() {
+      Promise.all([getLeaderboardAsync(), getPlayersAsync(), getStickerCountsAsync()]).then(function(r) {
+        renderLeaderboard('start-leaderboard-list', 'start-leaderboard-empty', r[0]);
+        renderWhoPlayed('start-who-played-list', 'start-who-played-empty', r[1]);
+        renderStickerCounts('start-sticker-counts-list', r[2]);
+        renderBadges('start-badge-list');
+        showScreen('start-screen');
+      });
     }
 
-    document.querySelectorAll('.mode-btn').forEach(btn => {
+    function fetchAndRenderEndScreenData() {
+      Promise.all([getLeaderboardAsync(), getPlayersAsync(), getStickerCountsAsync()]).then(function(r) {
+        renderLeaderboard('end-leaderboard-list', 'end-leaderboard-empty', r[0]);
+        renderWhoPlayed('end-who-played-list', 'end-who-played-empty', r[1]);
+        renderStickerCounts('end-sticker-counts-list', r[2]);
+      });
+    }
+
+    function showEndScreen() {
+      var L = LANG[currentLang] || LANG.en;
+      var singleScore = score + totalBonus;
+      var endTwoPlayer = document.getElementById('end-two-player');
+      var endSingle = document.getElementById('final-score');
+      var endMsg = document.getElementById('end-message');
+      var endNameWrap = document.querySelector('#end-screen .name-input-wrap');
+      var endStickerWrap = document.querySelector('#end-screen .sticker-picker');
+      var endSaveBtn = document.getElementById('save-score-btn');
+      var endLevelBadge = document.getElementById('end-level-badge');
+
+      if (twoPlayerMode) {
+        endTwoPlayer.style.display = 'block';
+        endSingle.style.display = 'none';
+        endMsg.style.display = 'none';
+        document.getElementById('end-p1-score').textContent = L.player1 + ': ' + player1Score;
+        document.getElementById('end-p2-score').textContent = L.player2 + ': ' + player2Score;
+        var winnerEl = document.getElementById('winner-msg');
+        if (player1Score > player2Score) winnerEl.textContent = '🏆 ' + L.winner + ': ' + L.player1 + '!';
+        else if (player2Score > player1Score) winnerEl.textContent = '🏆 ' + L.winner + ': ' + L.player2 + '!';
+        else winnerEl.textContent = '🤝 ' + L.tie;
+        if (endNameWrap) endNameWrap.style.display = 'none';
+        if (endStickerWrap) endStickerWrap.style.display = 'none';
+        if (endSaveBtn) endSaveBtn.style.display = 'none';
+        if (endLevelBadge) endLevelBadge.style.display = 'none';
+      } else {
+        checkAndAwardBadges(singleScore, currentMode);
+        endTwoPlayer.style.display = 'none';
+        endSingle.style.display = 'block';
+        endMsg.style.display = 'block';
+        endSingle.textContent = singleScore + (totalBonus > 0 ? ' (' + score + '+' + totalBonus + ' ' + L.bonus + ')' : '') + ' / 10';
+        var msg = singleScore >= 10 ? (currentLang === 'ar' ? '🌟 ممتاز! أنت نجم! 🌟' : '🌟 Perfect! You are a superstar! 🌟') :
+                  singleScore >= 7 ? (currentLang === 'ar' ? '👍 أحسنت! تعرف الكثير!' : '👍 Awesome job! You know a lot!') :
+                  singleScore >= 5 ? (currentLang === 'ar' ? '💪 جهد رائع! واصل التعلم!' : '💪 Good effort! Keep learning!') :
+                  (currentLang === 'ar' ? '📚 حظ أوفر! الممارسة تصنع الفرق!' : '📚 Nice try! Practice makes perfect!');
+        endMsg.textContent = msg;
+        document.getElementById('player-name').value = '';
+        selectedSticker = STICKERS[0];
+        buildStickerPicker();
+        endSaveBtn.textContent = L.saveScore;
+        if (endSaveBtn) endSaveBtn.style.display = 'inline-block';
+        if (endNameWrap) endNameWrap.style.display = 'block';
+        if (endStickerWrap) endStickerWrap.style.display = 'block';
+        var level = getLevel(Math.min(10, singleScore));
+        endLevelBadge.textContent = (currentLang === 'ar' ? level.nameAr : level.name) + ' ' + (currentLang === 'ar' ? '⭐' : 'Level');
+        endLevelBadge.className = 'level-badge ' + level.cls;
+        endLevelBadge.style.display = 'block';
+      }
+      renderBadges('end-badge-list');
+      document.getElementById('restart-btn').textContent = L.playAgain;
+      showScreen('end-screen');
+      fetchAndRenderEndScreenData();
+    }
+
+    document.querySelectorAll('.mode-btn[data-mode]').forEach(btn => {
       btn.addEventListener('click', () => startQuiz(btn.dataset.mode));
+    });
+    document.getElementById('btn-1player').addEventListener('click', function() {
+      twoPlayerMode = false;
+      document.getElementById('btn-1player').classList.add('selected');
+      document.getElementById('btn-2players').classList.remove('selected');
+    });
+    document.getElementById('btn-2players').addEventListener('click', function() {
+      twoPlayerMode = true;
+      document.getElementById('btn-2players').classList.add('selected');
+      document.getElementById('btn-1player').classList.remove('selected');
     });
 
     document.getElementById('next-btn').addEventListener('click', nextQuestion);
 
-    document.getElementById('restart-btn').addEventListener('click', () => {
-      renderLeaderboard('start-leaderboard-list', 'start-leaderboard-empty');
-      renderWhoPlayed('start-who-played-list', 'start-who-played-empty');
-      renderStickerCounts('start-sticker-counts-list');
-      showScreen('start-screen');
+    document.getElementById('restart-btn').addEventListener('click', function() {
+      fetchAndRenderStartScreen();
     });
 
-    document.getElementById('save-score-btn').addEventListener('click', () => {
+    document.getElementById('save-score-btn').addEventListener('click', function() {
       const name = document.getElementById('player-name').value;
-      saveToLeaderboard(name, score, currentMode, selectedSticker);
-      renderLeaderboard('end-leaderboard-list', 'end-leaderboard-empty');
-      renderWhoPlayed('end-who-played-list', 'end-who-played-empty');
-      renderStickerCounts('end-sticker-counts-list');
-      document.getElementById('save-score-btn').textContent = '✅ Score saved!';
+      var effectiveScore = Math.min(10, score + totalBonus);
+      saveToLeaderboard(name, effectiveScore, currentMode, selectedSticker);
+      document.getElementById('save-score-btn').textContent = currentLang === 'ar' ? '✅ تم الحفظ!' : '✅ Score saved!';
+      fetchAndRenderEndScreenData();
     });
+
+    document.getElementById('lang-en').addEventListener('click', function() { setLang('en'); });
+    document.getElementById('lang-ar').addEventListener('click', function() { setLang('ar'); });
+    document.getElementById('lang-en-start').addEventListener('click', function() { setLang('en'); });
+    document.getElementById('lang-ar-start').addEventListener('click', function() { setLang('ar'); });
+    document.getElementById('sound-toggle').addEventListener('click', function() {
+      soundOn = !soundOn;
+      localStorage.setItem('kidsQuizSound', soundOn ? 'true' : 'false');
+      this.classList.toggle('on', soundOn);
+      this.textContent = (LANG[currentLang] || LANG.en).sound;
+    });
+    document.getElementById('voice-toggle').addEventListener('click', function() {
+      voiceOn = !voiceOn;
+      localStorage.setItem('kidsQuizVoice', voiceOn ? 'true' : 'false');
+      this.classList.toggle('on', voiceOn);
+      this.textContent = (LANG[currentLang] || LANG.en).voice;
+    });
+
+    applyLang();
 
     // —— Share link (WhatsApp, Email, Copy) ——
     const SHARE_TITLE = '🌟 Kids Quiz Game – fun quiz for kids!';
@@ -867,12 +1428,9 @@
 
     setupShareButtons();
 
-    // Intro: "Let's Play!" shows mode selection; show leaderboard and who played on start screen
-    document.getElementById('intro-play-btn').addEventListener('click', () => {
-      renderLeaderboard('start-leaderboard-list', 'start-leaderboard-empty');
-      renderWhoPlayed('start-who-played-list', 'start-who-played-empty');
-      renderStickerCounts('start-sticker-counts-list');
-      showScreen('start-screen');
+    // Intro: "Let's Play!" shows mode selection; fetch and show leaderboard (shared for everyone when Firebase is set)
+    document.getElementById('intro-play-btn').addEventListener('click', function() {
+      fetchAndRenderStartScreen();
     });
   </script>
 </body>
