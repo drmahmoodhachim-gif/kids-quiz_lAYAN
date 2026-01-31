@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌟 Kids Quiz Game</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.2rem;
+      color: #5c2d91;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+    .mode-btn {
+      display: block;
+      width: 100%;
+      padding: 24px 20px;
+      margin: 16px 0;
+      font-size: 1.4rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .mode-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .mode-countries {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      color: #fff;
+    }
+    .mode-history {
+      background: linear-gradient(135deg, #ee0979, #ff6a00);
+      color: #fff;
+    }
+    .score-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .score-bar span {
+      background: #f0e6ff;
+      padding: 8px 16px;
+      border-radius: 12px;
+      color: #5c2d91;
+    }
+    .question-text {
+      font-size: 1.5rem;
+      margin-bottom: 28px;
+      line-height: 1.4;
+      color: #333;
+    }
+    .option-btn {
+      display: block;
+      width: 100%;
+      padding: 20px 16px;
+      margin: 12px 0;
+      font-size: 1.2rem;
+      border: 3px solid #ddd;
+      border-radius: 14px;
+      background: #f8f8f8;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    .option-btn:hover {
+      background: #e8e0f0;
+      border-color: #9b6bb8;
+    }
+    .option-btn.correct {
+      background: #a8e6cf;
+      border-color: #2ecc71;
+    }
+    .option-btn.wrong {
+      background: #ffcccb;
+      border-color: #e74c3c;
+    }
+    .option-btn:disabled {
+      cursor: default;
+      opacity: 0.9;
+    }
+    .feedback {
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin: 20px 0;
+      padding: 16px;
+      border-radius: 12px;
+    }
+    .feedback.correct-msg {
+      background: #d4edda;
+      color: #155724;
+    }
+    .feedback.wrong-msg {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .next-btn, .restart-btn {
+      padding: 18px 40px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      margin-top: 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      transition: transform 0.2s;
+    }
+    .next-btn:hover, .restart-btn:hover {
+      transform: scale(1.05);
+    }
+    .end-score {
+      font-size: 3rem;
+      color: #5c2d91;
+      margin: 20px 0;
+    }
+    .end-message {
+      font-size: 1.3rem;
+      margin-bottom: 24px;
+      color: #555;
+    }
+    .question-number {
+      color: #888;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .share-section {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 2px dashed #e0e0e0;
+    }
+    .share-label {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 12px;
+    }
+    .share-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+    }
+    .share-btn {
+      padding: 14px 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s;
+    }
+    .share-btn:hover {
+      transform: scale(1.05);
+    }
+    .share-whatsapp {
+      background: #25D366;
+      color: #fff;
+    }
+    .share-email {
+      background: #ea4335;
+      color: #fff;
+    }
+    .share-copy {
+      background: #5c2d91;
+      color: #fff;
+    }
+    .share-hint {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 12px;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .copy-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: bold;
+      display: none;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .copy-toast.show {
+      display: block;
+      animation: fadeInOut 2s ease;
+    }
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; }
+      15%, 85% { opacity: 1; }
+    }
+    .intro-screen .intro-title {
+      font-size: 2.4rem;
+      margin-bottom: 16px;
+    }
+    .intro-screen .intro-desc {
+      font-size: 1.15rem;
+      color: #555;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .intro-credit {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #5c2d91;
+      margin-bottom: 28px;
+      padding: 14px 20px;
+      background: #f0e6ff;
+      border-radius: 14px;
+    }
+    .intro-btn {
+      padding: 22px 48px;
+      font-size: 1.4rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="intro-screen" class="screen active intro-screen">
+      <h1 class="intro-title">🌟 Kids Quiz Game 🌟</h1>
+      <p class="intro-desc">A fun quiz for kids ages 6–10! Choose Countries or History, answer 10 questions, and see how many you get right. Have fun! 🎮</p>
+      <p class="intro-credit">✨ This game is made by Layan Amashhadani ✨</p>
+      <button type="button" class="next-btn intro-btn" id="intro-play-btn">Let's Play! 🚀</button>
+    </div>
+
+    <div id="start-screen" class="screen">
+      <h1>🌟 Kids Quiz Game 🌟</h1>
+      <p class="subtitle">Pick a topic and have fun!</p>
+      <button class="mode-btn mode-countries" data-mode="countries">🌍 Countries<br><small>Capitals, flags & continents</small></button>
+      <button class="mode-btn mode-history" data-mode="history">📜 History<br><small>Ancient & world history</small></button>
+      <div class="share-section">
+        <p class="share-label">📤 Share this quiz</p>
+        <div class="share-btns">
+          <button type="button" class="share-btn share-whatsapp" id="share-wa-start" title="Share on WhatsApp">💬 WhatsApp</button>
+          <button type="button" class="share-btn share-email" id="share-email-start" title="Share by Email">✉️ Email</button>
+          <button type="button" class="share-btn share-copy" id="share-copy-start" title="Copy link">🔗 Copy link</button>
+        </div>
+        <p class="share-hint" id="share-hint-start"></p>
+      </div>
+    </div>
+
+    <div id="quiz-screen" class="screen">
+      <div class="score-bar">
+        <span>❤️ Score: <span id="score">0</span> / 10</span>
+        <span id="question-counter">Question 1 of 10</span>
+      </div>
+      <p class="question-number" id="question-number"></p>
+      <p class="question-text" id="question-text"></p>
+      <div id="options-container"></div>
+      <div id="feedback" class="feedback" style="display:none;"></div>
+      <button id="next-btn" class="next-btn" style="display:none;">Next Question ➡️</button>
+    </div>
+
+    <div id="end-screen" class="screen">
+      <h1>🎉 Quiz Complete! 🎉</h1>
+      <p class="end-score" id="final-score">0 / 10</p>
+      <p class="end-message" id="end-message"></p>
+      <button id="restart-btn" class="restart-btn">🔄 Play Again</button>
+      <div class="share-section">
+        <p class="share-label">📤 Share this quiz</p>
+        <div class="share-btns">
+          <button type="button" class="share-btn share-whatsapp" id="share-wa-end">💬 WhatsApp</button>
+          <button type="button" class="share-btn share-email" id="share-email-end">✉️ Email</button>
+          <button type="button" class="share-btn share-copy" id="share-copy-end">🔗 Copy link</button>
+        </div>
+        <p class="share-hint" id="share-hint-end"></p>
+      </div>
+    </div>
+  </div>
+  <div class="copy-toast" id="copy-toast">🔗 Link copied!</div>
+
+  <script>
+    const QUESTIONS = {
+      countries: [
+        { q: "What is the capital of France? 🇫🇷", options: ["London", "Paris", "Berlin", "Madrid"], correct: 1 },
+        { q: "What is the capital of Japan? 🇯🇵", options: ["Seoul", "Beijing", "Tokyo", "Bangkok"], correct: 2 },
+        { q: "Which country has this flag: 🇺🇸 stars and stripes?", options: ["Canada", "USA", "UK", "Australia"], correct: 1 },
+        { q: "Which continent is Egypt in? 🇪🇬", options: ["Europe", "Asia", "Africa", "South America"], correct: 2 },
+        { q: "What is the capital of Australia? 🇦🇺", options: ["Sydney", "Melbourne", "Canberra", "Perth"], correct: 2 },
+        { q: "Which country has the maple leaf on its flag? 🍁", options: ["USA", "Canada", "UK", "Ireland"], correct: 1 },
+        { q: "Which continent is Brazil in? 🇧🇷", options: ["Africa", "Europe", "South America", "Asia"], correct: 2 },
+        { q: "What is the capital of Italy? 🇮🇹", options: ["Venice", "Rome", "Milan", "Naples"], correct: 1 },
+        { q: "Which country has a flag with a red circle? 🇯🇵", options: ["China", "Japan", "South Korea", "Vietnam"], correct: 1 },
+        { q: "Which continent has the most people? 🌏", options: ["Europe", "Africa", "Asia", "North America"], correct: 2 },
+        { q: "What is the capital of Spain? 🇪🇸", options: ["Barcelona", "Madrid", "Lisbon", "Rome"], correct: 1 },
+        { q: "Which country is the Great Wall in? 🇨🇳", options: ["Japan", "India", "China", "Korea"], correct: 2 },
+        { q: "Which continent is India in? 🇮🇳", options: ["Africa", "Europe", "Asia", "Australia"], correct: 2 },
+        { q: "What is the capital of Germany? 🇩🇪", options: ["Munich", "Berlin", "Hamburg", "Vienna"], correct: 1 },
+        { q: "Which country is famous for kangaroos? 🇦🇺", options: ["New Zealand", "Australia", "South Africa", "India"], correct: 1 },
+        { q: "Which continent is cold and has penguins? 🐧", options: ["Europe", "Asia", "Antarctica", "Africa"], correct: 2 },
+        { q: "What is the capital of the United Kingdom? 🇬🇧", options: ["Manchester", "London", "Edinburgh", "Dublin"], correct: 1 },
+        { q: "Which country has the Eiffel Tower? 🗼", options: ["Italy", "Spain", "France", "Germany"], correct: 2 },
+        { q: "Which continent is Mexico in? 🇲🇽", options: ["South America", "Europe", "North America", "Africa"], correct: 2 },
+        { q: "What is the capital of Canada? 🇨🇦", options: ["Toronto", "Vancouver", "Ottawa", "Montreal"], correct: 2 }
+      ],
+      history: [
+        { q: "Who built the Great Pyramids? 🇪🇬", options: ["The Romans", "The Greeks", "The Ancient Egyptians", "The Vikings"], correct: 2 },
+        { q: "In which country did the Ancient Egyptians live? 🌅", options: ["Greece", "Egypt", "Italy", "India"], correct: 1 },
+        { q: "What did Romans build to carry water? 🏛️", options: ["Bridges", "Aqueducts", "Castles", "Tunnels"], correct: 1 },
+        { q: "Who was the first person to walk on the Moon? 🌙", options: ["Buzz Aldrin", "Neil Armstrong", "John Glenn", "Yuri Gagarin"], correct: 1 },
+        { q: "Where did the Olympic Games start? 🏟️", options: ["Rome", "Egypt", "Ancient Greece", "China"], correct: 2 },
+        { q: "What did knights wear in the Middle Ages? ⚔️", options: ["T-shirts", "Armor", "Togas", "Uniforms"], correct: 1 },
+        { q: "Who wrote the Declaration of Independence? 📜", options: ["George Washington", "Benjamin Franklin", "Thomas Jefferson", "Abraham Lincoln"], correct: 2 },
+        { q: "What did people use before paper? 📜", options: ["Plastic", "Stone tablets and papyrus", "Metal sheets", "Wood only"], correct: 1 },
+        { q: "Which empire built the Colosseum? 🏛️", options: ["The Greeks", "The Egyptians", "The Romans", "The Vikings"], correct: 2 },
+        { q: "When did World War II end? 🌍", options: ["1939", "1945", "1950", "1960"], correct: 1 },
+        { q: "Who discovered America in 1492? 🚢", options: ["Amerigo Vespucci", "Christopher Columbus", "Marco Polo", "Leif Erikson"], correct: 1 },
+        { q: "What did Ancient Egyptians wrap their dead in? 🪦", options: ["Cloth", "Leaves", "Bandages (mummy)", "Silk"], correct: 2 },
+        { q: "Which ancient wonder was in Babylon? 🌿", options: ["Pyramids", "Hanging Gardens", "Colosseum", "Great Wall"], correct: 1 },
+        { q: "Who was the first president of the USA? 🇺🇸", options: ["Thomas Jefferson", "John Adams", "George Washington", "Benjamin Franklin"], correct: 2 },
+        { q: "What did Vikings use to travel across the sea? ⛵", options: ["Steamships", "Longships", "Canoes", "Galleons"], correct: 1 },
+        { q: "In which country did the Renaissance start? 🎨", options: ["France", "Spain", "Italy", "Germany"], correct: 2 },
+        { q: "What did people use to write on in Ancient Rome? 📜", options: ["Paper", "Wax tablets and scrolls", "Computers", "Stone only"], correct: 1 },
+        { q: "Who was the famous queen of Egypt? 👑", options: ["Nefertiti", "Cleopatra", "Hatshepsut", "Isis"], correct: 1 },
+        { q: "What big event happened in 1969? 🚀", options: ["World War ended", "First moon landing", "Internet invented", "First airplane"], correct: 1 },
+        { q: "Which civilization helped invent our calendar? 📅", options: ["Egyptians", "Romans", "Greeks", "Chinese"], correct: 1 }
+      ]
+    };
+
+    let currentMode = null;
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let answered = false;
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function startQuiz(mode) {
+      currentMode = mode;
+      currentQuestions = shuffle(QUESTIONS[mode]).slice(0, 10);
+      currentIndex = 0;
+      score = 0;
+      answered = false;
+      document.getElementById('score').textContent = '0';
+      showScreen('quiz-screen');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      answered = false;
+      const q = currentQuestions[currentIndex];
+      document.getElementById('question-number').textContent = `Question ${currentIndex + 1} of 10`;
+      document.getElementById('question-text').textContent = q.q;
+      document.getElementById('question-counter').textContent = `Question ${currentIndex + 1} of 10`;
+      document.getElementById('feedback').style.display = 'none';
+      document.getElementById('next-btn').style.display = 'none';
+
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.addEventListener('click', () => selectOption(i, btn));
+        container.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedIndex, btn) {
+      if (answered) return;
+      answered = true;
+      const q = currentQuestions[currentIndex];
+      const buttons = document.querySelectorAll('.option-btn');
+      buttons.forEach(b => b.disabled = true);
+
+      if (selectedIndex === q.correct) {
+        score++;
+        document.getElementById('score').textContent = score;
+        btn.classList.add('correct');
+        const fb = document.getElementById('feedback');
+        fb.className = 'feedback correct-msg';
+        fb.textContent = '🎉 Correct! Great job!';
+        fb.style.display = 'block';
+      } else {
+        btn.classList.add('wrong');
+        buttons[q.correct].classList.add('correct');
+        const fb = document.getElementById('feedback');
+        fb.className = 'feedback wrong-msg';
+        fb.textContent = '❌ Try again next time!';
+        fb.style.display = 'block';
+      }
+      document.getElementById('next-btn').style.display = 'inline-block';
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex >= currentQuestions.length) {
+        showEndScreen();
+      } else {
+        showQuestion();
+      }
+    }
+
+    function showEndScreen() {
+      document.getElementById('final-score').textContent = `${score} / 10`;
+      let msg = score === 10 ? '🌟 Perfect! You are a superstar! 🌟' :
+                score >= 7 ? '👍 Awesome job! You know a lot!' :
+                score >= 5 ? '💪 Good effort! Keep learning!' :
+                '📚 Nice try! Practice makes perfect!';
+      document.getElementById('end-message').textContent = msg;
+      showScreen('end-screen');
+    }
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => startQuiz(btn.dataset.mode));
+    });
+
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
+
+    document.getElementById('restart-btn').addEventListener('click', () => {
+      showScreen('start-screen');
+    });
+
+    // —— Share link (WhatsApp, Email, Copy) ——
+    const SHARE_TITLE = '🌟 Kids Quiz Game – fun quiz for kids!';
+    const SHARE_TEXT = 'Try this fun kids quiz (Countries & History)! ';
+
+    function getShareUrl() {
+      return window.location.href;
+    }
+
+    function isLocalFile() {
+      return /^file:\/\//i.test(window.location.href);
+    }
+
+    function updateShareHints() {
+      const hint = isLocalFile()
+        ? 'To share a link, upload this file to a free host (e.g. Netlify Drop, GitHub Pages) so it has a web address.'
+        : 'Anyone with this link can play the quiz.';
+      const elStart = document.getElementById('share-hint-start');
+      const elEnd = document.getElementById('share-hint-end');
+      if (elStart) elStart.textContent = hint;
+      if (elEnd) elEnd.textContent = hint;
+    }
+
+    function shareViaWhatsApp(extraText) {
+      const url = getShareUrl();
+      const text = (extraText || SHARE_TEXT) + (isLocalFile() ? '(Upload the file to get a real link!)' : url);
+      const waUrl = 'https://wa.me/?text=' + encodeURIComponent(text);
+      window.open(waUrl, '_blank', 'noopener');
+    }
+
+    function shareViaEmail(extraText) {
+      const url = getShareUrl();
+      const subject = '🌟 Kids Quiz Game';
+      const body = (extraText || SHARE_TEXT) + (isLocalFile() ? ' (Upload the HTML file to the web to get a shareable link.)' : url);
+      const mailto = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      window.location.href = mailto;
+    }
+
+    function copyLinkToClipboard() {
+      const url = getShareUrl();
+      const toCopy = isLocalFile()
+        ? 'Upload kids-quiz.html to a free host (e.g. app.netlify.com/drop) to get a link. Then share that link via WhatsApp or Email.'
+        : url;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(toCopy).then(() => showCopyToast());
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = toCopy;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showCopyToast();
+      }
+    }
+
+    function showCopyToast() {
+      const toast = document.getElementById('copy-toast');
+      toast.textContent = isLocalFile() ? '📋 Instructions copied!' : '🔗 Link copied!';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function setupShareButtons() {
+      updateShareHints();
+      ['start', 'end'].forEach(screen => {
+        document.getElementById('share-wa-' + screen)?.addEventListener('click', () => shareViaWhatsApp(SHARE_TEXT));
+        document.getElementById('share-email-' + screen)?.addEventListener('click', () => shareViaEmail(SHARE_TEXT));
+        document.getElementById('share-copy-' + screen)?.addEventListener('click', copyLinkToClipboard);
+      });
+    }
+
+    // Optional: on end screen, share with score
+    const origShowEndScreen = showEndScreen;
+    showEndScreen = function() {
+      origShowEndScreen();
+      document.getElementById('share-wa-end').onclick = () => shareViaWhatsApp('I got ' + score + '/10 on the Kids Quiz! ' + SHARE_TEXT);
+      document.getElementById('share-email-end').onclick = () => shareViaEmail('I got ' + score + '/10! ' + SHARE_TEXT);
+    };
+
+    setupShareButtons();
+
+    // Intro: "Let's Play!" shows mode selection
+    document.getElementById('intro-play-btn').addEventListener('click', () => showScreen('start-screen'));
+  </script>
+</body>
+</html>
