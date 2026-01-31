@@ -401,6 +401,9 @@
     .lang-toggle-box .lang-label { font-size: 0.95rem; color: #666; margin-bottom: 8px; }
     .lang-toggle-box .lang-switch { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
     .lang-toggle-box .lang-switch button { padding: 12px 24px; font-size: 1.1rem; border-radius: 12px; min-width: 100px; }
+    .global-scores-notice { margin-top: 12px; padding: 12px; background: #e8f5e9; border-radius: 12px; font-size: 0.9rem; color: #2e7d32; text-align: center; }
+    .local-scores-notice { margin-top: 12px; padding: 12px; background: #fff3e0; border-radius: 12px; font-size: 0.85rem; color: #e65100; text-align: center; }
+    .local-scores-notice a { color: #bf360c; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -445,11 +448,15 @@
       <button class="mode-btn mode-sports" data-mode="sports">⚽ Sports<br><small>Games & Olympics</small></button>
       <div class="leaderboard-box" id="start-leaderboard">
         <h3>🏆 Top scorers</h3>
+        <div class="global-scores-notice" id="notice-global" style="display:none;">🌐 Scores from everyone (all devices & locations)</div>
+        <div class="local-scores-notice" id="notice-local" style="display:none;">📱 Scores here are only from this device. To see everyone's scores from any device or location, the quiz owner must add Firebase – <a href="https://github.com/drmahmoodhachim-gif/kids-quiz_lAYAN#-see-scores-from-all-users-different-devices--locations" target="_blank" rel="noopener">see setup guide</a>.</div>
         <ul class="leaderboard-list" id="start-leaderboard-list"></ul>
         <p class="leaderboard-empty" id="start-leaderboard-empty" style="display:none;">No scores yet. Play to be first!</p>
       </div>
       <div class="who-played-box" id="start-who-played">
         <h3>👥 Who tried the quiz</h3>
+        <div class="local-scores-notice" id="notice-who-local" style="display:none;">📱 List is only from this device. Add Firebase to see everyone.</div>
+        <div class="global-scores-notice" id="notice-who-global" style="display:none;">🌐 Everyone who played (all devices)</div>
         <ul class="who-played-list" id="start-who-played-list"></ul>
         <p class="leaderboard-empty" id="start-who-played-empty" style="display:none;">No one yet. Be the first!</p>
       </div>
@@ -1228,7 +1235,26 @@
       return div.innerHTML;
     }
 
+    function updateScoresNotices() {
+      var g = document.getElementById('notice-global');
+      var l = document.getElementById('notice-local');
+      var wg = document.getElementById('notice-who-global');
+      var wl = document.getElementById('notice-who-local');
+      if (useFirebase) {
+        if (g) g.style.display = 'block';
+        if (l) l.style.display = 'none';
+        if (wg) wg.style.display = 'block';
+        if (wl) wl.style.display = 'none';
+      } else {
+        if (g) g.style.display = 'none';
+        if (l) l.style.display = 'block';
+        if (wg) wg.style.display = 'none';
+        if (wl) wl.style.display = 'block';
+      }
+    }
+
     function fetchAndRenderStartScreen() {
+      updateScoresNotices();
       Promise.all([getLeaderboardAsync(), getPlayersAsync(), getStickerCountsAsync()]).then(function(r) {
         renderLeaderboard('start-leaderboard-list', 'start-leaderboard-empty', r[0]);
         renderWhoPlayed('start-who-played-list', 'start-who-played-empty', r[1]);
