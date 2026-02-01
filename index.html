@@ -420,6 +420,16 @@
     .mode-row .mode-btn.selected { box-shadow: 0 0 0 3px #5c2d91; }
     .player-turn { font-size: 1.1rem; font-weight: bold; color: #5c2d91; margin-bottom: 8px; }
     .two-player-scores { display: flex; justify-content: space-around; margin: 16px 0; flex-wrap: wrap; gap: 12px; }
+    /* Online play */
+    .online-section { margin-top: 20px; padding: 20px; background: #e3f2fd; border-radius: 16px; text-align: center; }
+    .online-section h3 { font-size: 1.2rem; color: #1565c0; margin-bottom: 12px; }
+    .online-section input { padding: 12px 16px; font-size: 1rem; border-radius: 10px; border: 2px solid #90caf9; margin: 8px; max-width: 200px; }
+    .online-section .code-display { font-size: 2rem; font-weight: bold; letter-spacing: 8px; color: #0d47a1; margin: 16px 0; padding: 12px; background: #fff; border-radius: 12px; }
+    .online-section .online-status { margin: 12px 0; color: #555; }
+    .online-section .online-btn { padding: 14px 24px; font-size: 1.1rem; margin: 8px; border-radius: 12px; border: none; cursor: pointer; background: #1976d2; color: #fff; font-weight: bold; }
+    .online-section .online-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .online-section .online-btn.secondary { background: #5c2d91; }
+    .online-section .online-back { margin-top: 16px; }
     .two-player-scores .p-score { padding: 12px 20px; border-radius: 14px; font-size: 1.2rem; font-weight: bold; }
     .two-player-scores .p1 { background: #e3f2fd; color: #1565c0; }
     .two-player-scores .p2 { background: #fce4ec; color: #c2185b; }
@@ -469,6 +479,9 @@
         <button type="button" class="mode-btn mode-sports" id="btn-2players">👦👧 2 Players</button>
       </div>
       <p class="subtitle" data-i18n="pickCategory">Pick a category and have fun!</p>
+      <div class="online-section">
+        <button type="button" class="online-btn secondary" id="btn-play-online">Play online (2 players, same quiz)</button>
+      </div>
       <p class="user-count" id="start-user-count" aria-live="polite">👥 No one yet. Be the first!</p>
       <button class="mode-btn mode-countries" data-mode="countries">Countries<br><small>Capitals, flags & continents</small></button>
       <button class="mode-btn mode-history" data-mode="history">History<br><small>Ancient & world history</small></button>
@@ -512,6 +525,50 @@
       </div>
     </div>
 
+    <div id="online-screen" class="screen">
+      <h2>Play online</h2>
+      <p class="subtitle">Play the same quiz with a friend on another device. One creates a game, the other joins with the code.</p>
+      <div class="mode-row">
+        <button type="button" class="mode-btn mode-countries" id="online-create-btn">Create game</button>
+        <button type="button" class="mode-btn mode-history" id="online-join-btn">Join game</button>
+      </div>
+      <div id="online-create-panel" style="display:none;" class="online-section">
+        <h3>Create a game</h3>
+        <p>Pick a category:</p>
+        <select id="online-create-mode" class="online-mode-select">
+          <option value="countries">Countries</option>
+          <option value="history">History</option>
+          <option value="animals">Animals</option>
+          <option value="science">Science</option>
+          <option value="sports">Sports</option>
+          <option value="harryPotter">Harry Potter</option>
+          <option value="movies">Movies</option>
+          <option value="space">Space</option>
+          <option value="food">Food</option>
+        </select>
+        <p>Your name:</p>
+        <input type="text" id="online-create-name" placeholder="Your name" maxlength="20" />
+        <br><button type="button" class="online-btn" id="online-create-submit">Create</button>
+        <div id="online-create-waiting" style="display:none;">
+          <p class="code-display" id="online-room-code">------</p>
+          <p class="online-status" id="online-create-status">Share this code with your friend. Waiting for player 2...</p>
+          <button type="button" class="online-btn" id="online-start-game-btn" style="display:none;">Start game</button>
+        </div>
+        <button type="button" class="online-btn secondary online-back" id="online-create-back" style="display:none;">Back</button>
+      </div>
+      <div id="online-join-panel" style="display:none;" class="online-section">
+        <h3>Join a game</h3>
+        <p>Enter the 6-digit code:</p>
+        <input type="text" id="online-join-code" placeholder="000000" maxlength="6" pattern="[0-9]*" inputmode="numeric" />
+        <p>Your name:</p>
+        <input type="text" id="online-join-name" placeholder="Your name" maxlength="20" />
+        <br><button type="button" class="online-btn" id="online-join-submit">Join</button>
+        <p class="online-status" id="online-join-status" style="display:none;">You joined! Waiting for host to start the game.</p>
+        <button type="button" class="online-btn secondary online-back" id="online-join-back">Back</button>
+      </div>
+      <button type="button" class="online-btn secondary" id="online-screen-back" style="margin-top:16px;">Back to categories</button>
+    </div>
+
     <div id="quiz-screen" class="screen">
       <div class="score-bar">
         <span>❤️ Score: <span id="score">0</span><span id="bonus-display"></span> / 10</span>
@@ -528,6 +585,11 @@
 
     <div id="end-screen" class="screen">
       <h1>🎉 Quiz Complete! 🎉</h1>
+      <div id="end-online-result" class="online-section" style="display:none;">
+        <h3>Online match result</h3>
+        <p class="online-status" id="end-online-scores"></p>
+        <p class="online-status" id="end-online-winner"></p>
+      </div>
       <div id="end-two-player" style="display:none;">
         <div class="two-player-scores">
           <span class="p-score p1" id="end-p1-score">Player 1: 0</span>
@@ -607,7 +669,16 @@
         { q: "What is the capital of the United Kingdom? 🇬🇧", options: ["Manchester", "London", "Edinburgh", "Dublin"], correct: 1 },
         { q: "Which country has the Eiffel Tower? 🗼", options: ["Italy", "Spain", "France", "Germany"], correct: 2 },
         { q: "Which continent is Mexico in? 🇲🇽", options: ["South America", "Europe", "North America", "Africa"], correct: 2 },
-        { q: "What is the capital of Canada? 🇨🇦", options: ["Toronto", "Vancouver", "Ottawa", "Montreal"], correct: 2 }
+        { q: "What is the capital of Canada? 🇨🇦", options: ["Toronto", "Vancouver", "Ottawa", "Montreal"], correct: 2 },
+        { q: "What is the capital of Egypt?", options: ["Alexandria", "Cairo", "Luxor", "Giza"], correct: 1 },
+        { q: "Which country has the Taj Mahal?", options: ["Pakistan", "India", "Bangladesh", "Sri Lanka"], correct: 1 },
+        { q: "What is the capital of Russia?", options: ["St Petersburg", "Moscow", "Kiev", "Warsaw"], correct: 1 },
+        { q: "Which country is the Acropolis in?", options: ["Italy", "Turkey", "Greece", "Egypt"], correct: 2 },
+        { q: "What is the capital of Brazil?", options: ["Rio", "Sao Paulo", "Brasilia", "Salvador"], correct: 2 },
+        { q: "Which country has the Statue of Liberty?", options: ["France", "USA", "UK", "Canada"], correct: 1 },
+        { q: "What is the capital of South Korea?", options: ["Busan", "Seoul", "Incheon", "Daegu"], correct: 1 },
+        { q: "Which continent is Kenya in?", options: ["Asia", "Europe", "Africa", "South America"], correct: 2 },
+        { q: "What is the capital of Argentina?", options: ["Sao Paulo", "Lima", "Buenos Aires", "Santiago"], correct: 2 }
       ],
       history: [
         { q: "Who built the Great Pyramids? 🇪🇬", options: ["The Romans", "The Greeks", "The Ancient Egyptians", "The Vikings"], correct: 2 },
@@ -664,7 +735,16 @@
         { q: "Which animal hibernates in winter? 🐻", options: ["Lion", "Bear", "Monkey", "Kangaroo"], correct: 1 },
         { q: "What is a group of lions called? 🦁", options: ["Flock", "Herd", "Pride", "Pack"], correct: 2 },
         { q: "Which bird is a symbol of peace? 🕊️", options: ["Crow", "Dove", "Hawk", "Sparrow"], correct: 1 },
-        { q: "What color is a polar bear's skin? 🐻‍❄️", options: ["White", "Black", "Pink", "Brown"], correct: 1 }
+        { q: "What color is a polar bear's skin? 🐻‍❄️", options: ["White", "Black", "Pink", "Brown"], correct: 1 },
+        { q: "Which animal has the longest neck?", options: ["Elephant", "Giraffe", "Ostrich", "Swan"], correct: 1 },
+        { q: "What do ladybugs eat?", options: ["Leaves", "Small insects like aphids", "Flowers", "Fruit"], correct: 1 },
+        { q: "Which bird can mimic human speech?", options: ["Crow", "Parrot", "Sparrow", "Pigeon"], correct: 1 },
+        { q: "What is a baby cat called?", options: ["Puppy", "Cub", "Kitten", "Calf"], correct: 2 },
+        { q: "Which animal carries its home on its back?", options: ["Snail", "Turtle", "Both", "Neither"], correct: 2 },
+        { q: "What do ants live in?", options: ["Nests", "Hives", "Burrows", "Trees only"], correct: 0 },
+        { q: "Which animal has stripes and is a big cat?", options: ["Lion", "Leopard", "Tiger", "Jaguar"], correct: 2 },
+        { q: "What do owls hunt at night?", options: ["Insects", "Small animals like mice", "Fish", "Plants"], correct: 1 },
+        { q: "Which sea animal has eight arms?", options: ["Jellyfish", "Octopus", "Starfish", "Crab"], correct: 1 }
       ],
       science: [
         { q: "What planet do we live on? 🌍", options: ["Mars", "Earth", "Venus", "Jupiter"], correct: 1 },
@@ -686,7 +766,16 @@
         { q: "Which gas do plants take in? 🌿", options: ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"], correct: 1 },
         { q: "What do we use to see very small things? 🔬", options: ["Telescope", "Microscope", "Camera", "Glasses"], correct: 1 },
         { q: "What is the boiling point of water? (about) 🌡️", options: ["50°C", "100°C", "150°C", "200°C"], correct: 1 },
-        { q: "Which animal has the biggest heart? 🐋", options: ["Elephant", "Giraffe", "Blue whale", "Lion"], correct: 2 }
+        { q: "Which animal has the biggest heart? 🐋", options: ["Elephant", "Giraffe", "Blue whale", "Lion"], correct: 2 },
+        { q: "What is the center of an atom called?", options: ["Electron", "Nucleus", "Proton", "Neutron"], correct: 1 },
+        { q: "What do we call rain that freezes before it hits the ground?", options: ["Snow", "Hail", "Sleet", "Fog"], correct: 1 },
+        { q: "How many teeth do adults usually have?", options: ["28", "32", "36", "24"], correct: 1 },
+        { q: "What is the hardest natural substance?", options: ["Iron", "Diamond", "Gold", "Silver"], correct: 1 },
+        { q: "What gas do plants give off?", options: ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"], correct: 1 },
+        { q: "What is the smallest planet in our solar system?", options: ["Mars", "Venus", "Mercury", "Pluto"], correct: 2 },
+        { q: "What do we use to measure temperature?", options: ["Ruler", "Thermometer", "Scale", "Clock"], correct: 1 },
+        { q: "What is the study of stars and space called?", options: ["Biology", "Astronomy", "Geography", "Chemistry"], correct: 1 },
+        { q: "What part of the plant takes in water from the soil?", options: ["Leaves", "Stem", "Roots", "Flower"], correct: 2 }
       ],
       sports: [
         { q: "How many players are on a soccer team on the field? ⚽", options: ["9", "10", "11", "12"], correct: 2 },
@@ -708,7 +797,16 @@
         { q: "How many Grand Slam tennis tournaments are there per year? 🎾", options: ["Two", "Three", "Four", "Five"], correct: 2 },
         { q: "What is the name of the trophy in the soccer World Cup? 🏆", options: ["Olympic Cup", "Jules Rimet / FIFA World Cup", "Super Bowl", "Stanley Cup"], correct: 1 },
         { q: "Which animal is the symbol of the Olympics? 🦅", options: ["Lion", "Eagle", "Bear", "Tiger"], correct: 1 },
-        { q: "In running, what is a 'marathon'? 🏃", options: ["A short race", "A long race (about 42 km)", "A relay", "A jump"], correct: 1 }
+        { q: "In running, what is a 'marathon'? 🏃", options: ["A short race", "A long race (about 42 km)", "A relay", "A jump"], correct: 1 },
+        { q: "How many points is a touchdown worth in American football?", options: ["3", "6", "7", "10"], correct: 1 },
+        { q: "Which sport is played at Wimbledon?", options: ["Golf", "Tennis", "Cricket", "Rugby"], correct: 1 },
+        { q: "What do you hit in golf?", options: ["A ball into a hole", "A puck", "A shuttlecock", "A bat"], correct: 0 },
+        { q: "Which country invented soccer?", options: ["USA", "Brazil", "England", "Italy"], correct: 2 },
+        { q: "What is the name of the horse race in Kentucky?", options: ["Super Bowl", "Kentucky Derby", "World Series", "Grand Prix"], correct: 1 },
+        { q: "In volleyball, how many players are on each team?", options: ["5", "6", "7", "8"], correct: 1 },
+        { q: "Which sport uses a net and a shuttlecock?", options: ["Tennis", "Badminton", "Volleyball", "Table tennis"], correct: 1 },
+        { q: "What is the main winter sport in Canada?", options: ["Soccer", "Hockey", "Basketball", "Baseball"], correct: 1 },
+        { q: "In which sport do you bowl?", options: ["Baseball", "Cricket", "Bowling", "Golf"], correct: 2 }
       ],
       harryPotter: [
         { q: "What is the name of Harry's school?", options: ["Hogwarts", "Beauxbatons", "Durmstrang", "Ilvermorny"], correct: 0 },
@@ -730,7 +828,16 @@
         { q: "What is the street where the Dursleys live?", options: ["Grimmauld Place", "Diagon Alley", "Privet Drive", "Hogsmeade"], correct: 2 },
         { q: "Which creature can only be seen if you have seen death?", options: ["Phoenix", "Thestral", "Hippogriff", "Dragon"], correct: 1 },
         { q: "What is Ron's pet in the first book?", options: ["An owl", "A cat", "A rat named Scabbers", "A toad"], correct: 2 },
-        { q: "What colour is the Gryffindor house?", options: ["Green", "Blue", "Red and gold", "Yellow"], correct: 2 }
+        { q: "What colour is the Gryffindor house?", options: ["Green", "Blue", "Red and gold", "Yellow"], correct: 2 },
+        { q: "What is the name of Ron's sister who marries Harry?", options: ["Ginny", "Hermione", "Luna", "Fleur"], correct: 0 },
+        { q: "Which spell makes light?", options: ["Expelliarmus", "Lumos", "Wingardium Leviosa", "Alohomora"], correct: 1 },
+        { q: "What is Dumbledore's phoenix called?", options: ["Hedwig", "Fawkes", "Scabbers", "Crookshanks"], correct: 1 },
+        { q: "Which house does Draco Malfoy belong to?", options: ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"], correct: 3 },
+        { q: "What do Muggles call the wizarding world?", options: ["Magic land", "They don't know about it", "Hogwarts", "The other side"], correct: 1 },
+        { q: "What is the name of the wizarding bank?", options: ["Gringotts", "Hogwarts Bank", "Magic Bank", "Wizard Bank"], correct: 0 },
+        { q: "Which creature guards the entrance to the Gryffindor common room?", options: ["A dragon", "The Fat Lady painting", "A troll", "A cat"], correct: 1 },
+        { q: "What is a Patronus?", options: ["A spell", "A magical guardian animal", "A potion", "A book"], correct: 1 },
+        { q: "Who gives Harry the invisibility cloak?", options: ["Dumbledore", "Snape", "Hagrid", "McGonagall"], correct: 0 }
       ],
       movies: [
         { q: "In Frozen, what is the name of Elsa's sister?", options: ["Anna", "Rapunzel", "Cinderella", "Ariel"], correct: 0 },
@@ -752,7 +859,16 @@
         { q: "In Coco, what is the Land of the Dead?", options: ["A dream", "A place where spirits go", "A city", "A school"], correct: 1 },
         { q: "What animal is Dumbo?", options: ["A dog", "An elephant", "A bear", "A rabbit"], correct: 1 },
         { q: "In Zootopia, what animal is Officer Judy Hopps?", options: ["A fox", "A rabbit", "A lion", "A sheep"], correct: 1 },
-        { q: "What is the name of the robot in WALL-E?", options: ["EVE", "WALL-E", "Both", "Neither"], correct: 2 }
+        { q: "What is the name of the robot in WALL-E?", options: ["EVE", "WALL-E", "Both", "Neither"], correct: 2 },
+        { q: "In Monsters Inc, what do monsters collect from children?", options: ["Toys", "Screams", "Laughter", "Candy"], correct: 1 },
+        { q: "What is the name of the fish who forgets things in Finding Nemo?", options: ["Nemo", "Marlin", "Dory", "Gill"], correct: 2 },
+        { q: "In The Incredibles, what is the baby's power?", options: ["Strength", "Multiple powers that change", "Speed", "Invisibility"], correct: 1 },
+        { q: "What type of animal is Pumbaa in The Lion King?", options: ["Lion", "Warthog", "Meerkat", "Monkey"], correct: 1 },
+        { q: "In Cinderella, what turns into a carriage?", options: ["A pumpkin", "A melon", "A apple", "A potato"], correct: 0 },
+        { q: "What is the name of the snowman in Frozen?", options: ["Sven", "Olaf", "Kristoff", "Hans"], correct: 1 },
+        { q: "In Toy Story, what is the space ranger's name?", options: ["Woody", "Buzz Lightyear", "Rex", "Slinky"], correct: 1 },
+        { q: "What does Remy want to be in Ratatouille?", options: ["A runner", "A chef", "A painter", "A musician"], correct: 1 },
+        { q: "In Up, what kind of bird does Kevin turn out to be?", options: ["A parrot", "A female bird", "A male bird", "A dodo"], correct: 1 }
       ],
       space: [
         { q: "What planet do we live on?", options: ["Mars", "Earth", "Venus", "Jupiter"], correct: 1 },
@@ -796,7 +912,16 @@
         { q: "Which country is moussaka from?", options: ["Italy", "Turkey", "Greece", "Egypt"], correct: 2 },
         { q: "What is a gyro?", options: ["A type of pasta", "Greek meat in pita bread", "A dessert", "A drink"], correct: 1 },
         { q: "Which cuisine is kimchi from?", options: ["Japan", "China", "Korea", "Thailand"], correct: 2 },
-        { q: "What is baklava?", options: ["A soup", "A sweet pastry with nuts and honey", "A type of bread", "A drink"], correct: 1 }
+        { q: "What is baklava?", options: ["A soup", "A sweet pastry with nuts and honey", "A type of bread", "A drink"], correct: 1 },
+        { q: "Which country is famous for bratwurst sausage?", options: ["France", "Italy", "Germany", "Spain"], correct: 2 },
+        { q: "What is naan?", options: ["A type of rice", "Flatbread from India", "A soup", "A dessert"], correct: 1 },
+        { q: "Which cuisine is pad thai from?", options: ["China", "Japan", "Thailand", "Vietnam"], correct: 2 },
+        { q: "What is ceviche?", options: ["Grilled meat", "Raw fish in citrus", "A type of bread", "A dessert"], correct: 1 },
+        { q: "Which country is borscht soup from?", options: ["Poland", "Ukraine", "Russia", "Both Ukraine and Russia"], correct: 3 },
+        { q: "What is a croissant?", options: ["A type of bread", "A flaky pastry from France", "A cake", "A cookie"], correct: 1 },
+        { q: "Which country is famous for chocolate?", options: ["France", "Belgium", "Italy", "Spain"], correct: 1 },
+        { q: "What is tempura?", options: ["Raw fish", "Battered and fried food from Japan", "A noodle dish", "A soup"], correct: 1 },
+        { q: "Which cuisine uses a lot of olive oil?", options: ["German", "Greek and Mediterranean", "Japanese", "Mexican"], correct: 1 }
       ]
     };
 
@@ -917,12 +1042,16 @@
     const BADGES_KEY = 'kidsQuizBadges';
     const GAMES_PLAYED_KEY = 'kidsQuizGamesPlayed';
     const STATS_KEY = 'kidsQuizStats';
+    const RECENT_INDICES_KEY = 'kidsQuizRecentIndices';
+    const RECENT_KEEP = 20;
+    const QUESTIONS_PER_GAME = 10;
 
     let currentLang = (localStorage.getItem('kidsQuizLang') || 'en').slice(0, 2);
     let soundOn = localStorage.getItem('kidsQuizSound') !== 'false';
     let voiceOn = localStorage.getItem('kidsQuizVoice') === 'true';
     let currentMode = null;
     let currentQuestions = [];
+    let currentQuestionIndices = [];
     let currentIndex = 0;
     let score = 0;
     let totalBonus = 0;
@@ -935,6 +1064,18 @@
     let questionStartTime = 0;
     let secondsLeft = TIMER_SECONDS;
     let lastStartPlayerCount = 0;
+    let onlineMode = false;
+    let onlineRoomId = null;
+    let onlineRole = null;
+    let onlineRoomRef = null;
+
+    function seededRandom(seed) {
+      var s = seed || 1;
+      return function() {
+        s = (s * 1103515245 + 12345) & 0x7fffffff;
+        return s / 0x7fffffff;
+      };
+    }
 
     function shuffle(arr) {
       const a = [...arr];
@@ -943,6 +1084,56 @@
         [a[i], a[j]] = [a[j], a[i]];
       }
       return a;
+    }
+
+    function shuffleSeeded(arr, seed) {
+      const a = [...arr];
+      const rnd = seededRandom(seed);
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(rnd() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function getRecentIndices(mode) {
+      try {
+        const raw = localStorage.getItem(RECENT_INDICES_KEY);
+        const obj = raw ? JSON.parse(raw) : {};
+        return Array.isArray(obj[mode]) ? obj[mode] : [];
+      } catch (e) { return []; }
+    }
+
+    function saveRecentIndices(mode, indices) {
+      try {
+        const raw = localStorage.getItem(RECENT_INDICES_KEY);
+        const obj = raw ? JSON.parse(raw) : {};
+        const recent = Array.isArray(obj[mode]) ? obj[mode] : [];
+        const combined = [...indices, ...recent.filter(function(i) { return indices.indexOf(i) === -1; })].slice(0, RECENT_KEEP);
+        obj[mode] = combined;
+        localStorage.setItem(RECENT_INDICES_KEY, JSON.stringify(obj));
+      } catch (e) {}
+    }
+
+    function pickQuestions(mode, count, seed) {
+      const bank = QUESTIONS[mode];
+      if (!bank || bank.length === 0) return { questions: [], indices: [] };
+      const n = Math.min(count, bank.length);
+      if (seed != null && seed !== '') {
+        var shuffled = shuffleSeeded(bank.map(function(q, i) { return { q: q, i: i }; }), seed);
+        var picked = shuffled.slice(0, n);
+        return { questions: picked.map(function(x) { return x.q; }), indices: picked.map(function(x) { return x.i; }) };
+      }
+      var recent = getRecentIndices(mode);
+      var pool = bank.map(function(q, i) { return { q: q, i: i }; });
+      var prefer = pool.filter(function(x) { return recent.indexOf(x.i) === -1; });
+      var source = prefer.length >= n ? prefer : pool;
+      var shuffled = shuffle(source);
+      var picked = shuffled.slice(0, n);
+      var questions = picked.map(function(x) { return x.q; });
+      var indices = picked.map(function(x) { return x.i; });
+      saveRecentIndices(mode, indices);
+      return { questions: questions, indices: indices };
     }
 
     function playSoundCorrect() {
@@ -1069,9 +1260,11 @@
       if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     }
 
-    function startQuiz(mode) {
+    function startQuiz(mode, seed) {
       currentMode = mode;
-      currentQuestions = shuffle(QUESTIONS[mode]).slice(0, 10);
+      var picked = pickQuestions(mode, QUESTIONS_PER_GAME, seed);
+      currentQuestions = picked.questions;
+      currentQuestionIndices = picked.indices;
       currentIndex = 0;
       score = 0;
       totalBonus = 0;
@@ -1438,7 +1631,7 @@
 
     function showEndScreen() {
       var L = LANG[currentLang] || LANG.en;
-      var singleScore = score + totalBonus;
+      var singleScore = Math.min(10, score + totalBonus);
       var endTwoPlayer = document.getElementById('end-two-player');
       var endSingle = document.getElementById('final-score');
       var endMsg = document.getElementById('end-message');
@@ -1446,7 +1639,52 @@
       var endStickerWrap = document.querySelector('#end-screen .sticker-picker');
       var endSaveBtn = document.getElementById('save-score-btn');
       var endLevelBadge = document.getElementById('end-level-badge');
+      var endOnlineResult = document.getElementById('end-online-result');
+      var endOnlineScores = document.getElementById('end-online-scores');
+      var endOnlineWinner = document.getElementById('end-online-winner');
 
+      if (onlineMode && onlineRoomRef && useFirebase && firebaseDb) {
+        var scoreKey = onlineRole === 'player1' ? 'player1Score' : 'player2Score';
+        onlineRoomRef.update({ [scoreKey]: singleScore });
+        if (endOnlineResult) endOnlineResult.style.display = 'block';
+        if (endOnlineScores) endOnlineScores.textContent = 'You: ' + singleScore + '/10. Waiting for friend...';
+        if (endOnlineWinner) endOnlineWinner.textContent = '';
+        if (endNameWrap) endNameWrap.style.display = 'none';
+        if (endStickerWrap) endStickerWrap.style.display = 'none';
+        if (endSaveBtn) endSaveBtn.style.display = 'none';
+        if (endLevelBadge) endLevelBadge.style.display = 'none';
+        endTwoPlayer.style.display = 'none';
+        endSingle.style.display = 'block';
+        endMsg.style.display = 'block';
+        endSingle.textContent = singleScore + ' / 10';
+        endMsg.textContent = 'Waiting for your friend to finish...';
+        function onRoomUpdate(snap) {
+          var d = snap.val();
+          if (!d) return;
+          var s1 = d.player1Score;
+          var s2 = d.player2Score;
+          if (typeof s1 !== 'number' || typeof s2 !== 'number') return;
+          if (onlineRoomRef) onlineRoomRef.off('value', onRoomUpdate);
+          var p1Name = (d.player1Name || 'Player 1').trim();
+          var p2Name = (d.player2Name || 'Player 2').trim();
+          var myScore = onlineRole === 'player1' ? s1 : s2;
+          var otherScore = onlineRole === 'player1' ? s2 : s1;
+          var otherName = onlineRole === 'player1' ? p2Name : p1Name;
+          if (endOnlineScores) endOnlineScores.textContent = 'You: ' + myScore + '/10  ·  ' + otherName + ': ' + otherScore + '/10';
+          if (endOnlineWinner) {
+            if (myScore > otherScore) endOnlineWinner.textContent = '🏆 You win!';
+            else if (otherScore > myScore) endOnlineWinner.textContent = '🏆 ' + otherName + ' wins!';
+            else endOnlineWinner.textContent = '🤝 Tie!';
+          }
+        }
+        onlineRoomRef.on('value', onRoomUpdate);
+        renderBadges('end-badge-list');
+        document.getElementById('restart-btn').textContent = L.playAgain;
+        showScreen('end-screen');
+        return;
+      }
+
+      if (endOnlineResult) endOnlineResult.style.display = 'none';
       if (twoPlayerMode) {
         endTwoPlayer.style.display = 'block';
         endSingle.style.display = 'none';
@@ -1508,8 +1746,153 @@
     document.getElementById('next-btn').addEventListener('click', nextQuestion);
 
     document.getElementById('restart-btn').addEventListener('click', function() {
+      onlineMode = false;
+      onlineRoomId = null;
+      onlineRole = null;
+      if (onlineRoomRef) { try { onlineRoomRef.off(); } catch (e) {} onlineRoomRef = null; }
       fetchAndRenderStartScreen();
     });
+
+    (function setupOnlineMode() {
+      if (!useFirebase || !firebaseDb) {
+        var btn = document.getElementById('btn-play-online');
+        if (btn) { btn.style.display = 'none'; }
+        return;
+      }
+      var createPanel = document.getElementById('online-create-panel');
+      var createWaiting = document.getElementById('online-create-waiting');
+      var createStatus = document.getElementById('online-create-status');
+      var createBack = document.getElementById('online-create-back');
+      var joinPanel = document.getElementById('online-join-panel');
+      var joinStatus = document.getElementById('online-join-status');
+
+      document.getElementById('btn-play-online').addEventListener('click', function() {
+        showScreen('online-screen');
+        document.getElementById('online-create-panel').style.display = 'none';
+        document.getElementById('online-create-waiting').style.display = 'none';
+        document.getElementById('online-create-back').style.display = 'none';
+        document.getElementById('online-join-panel').style.display = 'none';
+        document.getElementById('online-join-status').style.display = 'none';
+      });
+
+      document.getElementById('online-screen-back').addEventListener('click', function() {
+        fetchAndRenderStartScreen();
+      });
+
+      document.getElementById('online-create-btn').addEventListener('click', function() {
+        document.getElementById('online-create-panel').style.display = 'block';
+        document.getElementById('online-create-waiting').style.display = 'none';
+        document.getElementById('online-create-back').style.display = 'inline-block';
+      });
+
+      document.getElementById('online-create-back').addEventListener('click', function() {
+        document.getElementById('online-create-panel').style.display = 'none';
+      });
+
+      document.getElementById('online-join-btn').addEventListener('click', function() {
+        document.getElementById('online-join-panel').style.display = 'block';
+      });
+
+      document.getElementById('online-join-back').addEventListener('click', function() {
+        document.getElementById('online-join-panel').style.display = 'none';
+      });
+
+      document.getElementById('online-create-submit').addEventListener('click', function() {
+        var mode = document.getElementById('online-create-mode').value;
+        var name = (document.getElementById('online-create-name').value || 'Player 1').trim().slice(0, 20);
+        if (!mode) return;
+        var code = String(Math.floor(100000 + Math.random() * 900000));
+        var roomRef = firebaseDb.ref('quiz/rooms').push();
+        var roomId = roomRef.key;
+        roomRef.set({
+          code: code,
+          mode: mode,
+          player1Name: name,
+          player2Name: null,
+          player1Score: null,
+          player2Score: null,
+          seed: null,
+          status: 'waiting',
+          createdAt: Date.now()
+        });
+        firebaseDb.ref('quiz/roomCodes/' + code).set(roomId);
+        document.getElementById('online-room-code').textContent = code;
+        document.getElementById('online-create-waiting').style.display = 'block';
+        createStatus.textContent = 'Share this code with your friend. Waiting for player 2...';
+        document.getElementById('online-start-game-btn').style.display = 'none';
+        onlineRoomRef = roomRef;
+        onlineRoomRef.on('value', function(snap) {
+          var d = snap.val();
+          if (!d) return;
+          if (d.player2Name) {
+            createStatus.textContent = d.player2Name + ' joined! Click Start to begin.';
+            document.getElementById('online-start-game-btn').style.display = 'inline-block';
+          }
+          if (d.status === 'playing' && typeof d.seed === 'number') {
+            onlineRoomRef.off();
+            onlineMode = true;
+            onlineRoomId = roomId;
+            onlineRole = 'player1';
+            onlineRoomRef = firebaseDb.ref('quiz/rooms/' + roomId);
+            startQuiz(d.mode, d.seed);
+            showScreen('quiz-screen');
+          }
+        });
+      });
+
+      document.getElementById('online-start-game-btn').addEventListener('click', function() {
+        if (!onlineRoomRef) return;
+        var seed = Date.now();
+        onlineRoomRef.update({ seed: seed, status: 'playing' });
+      });
+
+      document.getElementById('online-join-submit').addEventListener('click', function() {
+        var code = (document.getElementById('online-join-code').value || '').trim().replace(/\D/g, '').slice(0, 6);
+        var name = (document.getElementById('online-join-name').value || 'Player 2').trim().slice(0, 20);
+        if (code.length !== 6) {
+          joinStatus.textContent = 'Please enter a 6-digit code.';
+          joinStatus.style.display = 'block';
+          return;
+        }
+        firebaseDb.ref('quiz/roomCodes/' + code).once('value').then(function(snap) {
+          var roomId = snap.val();
+          if (!roomId) {
+            joinStatus.textContent = 'Code not found. Check the code and try again.';
+            joinStatus.style.display = 'block';
+            return;
+          }
+          var roomRef = firebaseDb.ref('quiz/rooms/' + roomId);
+          roomRef.once('value').then(function(roomSnap) {
+            var room = roomSnap.val();
+            if (!room || room.status !== 'waiting') {
+              joinStatus.textContent = 'This game has already started or ended.';
+              joinStatus.style.display = 'block';
+              return;
+            }
+            roomRef.update({ player2Name: name, status: 'ready' });
+            joinStatus.textContent = 'You joined! Waiting for host to start the game.';
+            joinStatus.style.display = 'block';
+            onlineRoomRef = roomRef;
+            onlineRoomRef.on('value', function(snap) {
+              var d = snap.val();
+              if (!d) return;
+              if (d.status === 'playing' && typeof d.seed === 'number') {
+                onlineRoomRef.off();
+                onlineMode = true;
+                onlineRoomId = roomId;
+                onlineRole = 'player2';
+                onlineRoomRef = firebaseDb.ref('quiz/rooms/' + roomId);
+                startQuiz(d.mode, d.seed);
+                showScreen('quiz-screen');
+              }
+            });
+          });
+        }).catch(function() {
+          joinStatus.textContent = 'Could not join. Try again.';
+          joinStatus.style.display = 'block';
+        });
+      });
+    })();
 
     document.getElementById('save-score-btn').addEventListener('click', function() {
       const name = document.getElementById('player-name').value;
