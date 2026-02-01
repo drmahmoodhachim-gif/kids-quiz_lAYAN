@@ -94,6 +94,10 @@
       background: linear-gradient(135deg, #0d47a1, #42a5f5);
       color: #fff;
     }
+    .mode-food {
+      background: linear-gradient(135deg, #e65100, #ff9800);
+      color: #fff;
+    }
     .score-bar {
       display: flex;
       justify-content: space-between;
@@ -474,6 +478,7 @@
       <button class="mode-btn mode-harrypotter" data-mode="harryPotter">Harry Potter<br><small>Hogwarts & magic</small></button>
       <button class="mode-btn mode-movies" data-mode="movies">Movies<br><small>Disney & cartoons</small></button>
       <button class="mode-btn mode-space" data-mode="space">Space<br><small>Planets & stars</small></button>
+      <button class="mode-btn mode-food" data-mode="food">Food<br><small>Different cuisines</small></button>
       <div class="leaderboard-box" id="start-leaderboard">
         <h3>🏆 Top scorers</h3>
         <div class="global-scores-notice" id="notice-global" style="display:none;">🌐 Scores from everyone (all devices & locations)</div>
@@ -770,11 +775,33 @@
         { q: "What is the name of the rover that went to Mars?", options: ["Apollo", "Curiosity", "Hubble", "Sputnik"], correct: 1 },
         { q: "Which planet is the coldest?", options: ["Mars", "Neptune", "Uranus", "Pluto or Neptune"], correct: 3 },
         { q: "What shape is the Earth?", options: ["Flat", "A sphere (round)", "A cube", "A disc"], correct: 1 }
+      ],
+      food: [
+        { q: "Which country is pizza from?", options: ["Mexico", "USA", "Italy", "France"], correct: 2 },
+        { q: "What is sushi?", options: ["Cooked rice with fish or vegetables", "A type of bread", "A soup", "A dessert"], correct: 0 },
+        { q: "Which cuisine uses a lot of curry and spices?", options: ["Italian", "Indian", "Japanese", "Mexican"], correct: 1 },
+        { q: "What is a taco?", options: ["A type of pasta", "A folded tortilla with filling", "A type of bread", "A dessert"], correct: 1 },
+        { q: "Which country is famous for croissants?", options: ["Italy", "Spain", "France", "Germany"], correct: 2 },
+        { q: "What is hummus made from?", options: ["Tomatoes", "Chickpeas", "Rice", "Cheese"], correct: 1 },
+        { q: "Which country is paella from?", options: ["Italy", "Spain", "Portugal", "Greece"], correct: 1 },
+        { q: "What is a burrito?", options: ["A type of soup", "A wrap with rice, beans and filling", "A salad", "A cake"], correct: 1 },
+        { q: "Which cuisine is dim sum from?", options: ["Japanese", "Korean", "Chinese", "Thai"], correct: 2 },
+        { q: "What is falafel made from?", options: ["Potatoes", "Chickpeas or fava beans", "Rice", "Bread"], correct: 1 },
+        { q: "Which country is famous for fish and chips?", options: ["USA", "France", "UK", "Australia"], correct: 2 },
+        { q: "What is pasta from?", options: ["China", "Italy", "Mexico", "India"], correct: 1 },
+        { q: "Which cuisine uses tortillas?", options: ["Italian", "Mexican", "Japanese", "Indian"], correct: 1 },
+        { q: "What is a baguette?", options: ["A long, thin French bread", "A type of cheese", "A dessert", "A drink"], correct: 0 },
+        { q: "Which country is ramen from?", options: ["China", "Japan", "Korea", "Vietnam"], correct: 1 },
+        { q: "What is guacamole made from?", options: ["Tomatoes", "Avocado", "Onions only", "Cheese"], correct: 1 },
+        { q: "Which country is moussaka from?", options: ["Italy", "Turkey", "Greece", "Egypt"], correct: 2 },
+        { q: "What is a gyro?", options: ["A type of pasta", "Greek meat in pita bread", "A dessert", "A drink"], correct: 1 },
+        { q: "Which cuisine is kimchi from?", options: ["Japan", "China", "Korea", "Thailand"], correct: 2 },
+        { q: "What is baklava?", options: ["A soup", "A sweet pastry with nuts and honey", "A type of bread", "A drink"], correct: 1 }
       ]
     };
 
-    const MODE_LABELS = { countries: "Countries", history: "History", animals: "Animals", science: "Science", sports: "Sports", harryPotter: "Harry Potter", movies: "Movies", space: "Space" };
-    const MODE_LABELS_AR = { countries: "دول", history: "تاريخ", animals: "حيوانات", science: "علوم", sports: "رياضة", harryPotter: "هاري بوتر", movies: "أفلام", space: "فضاء" };
+    const MODE_LABELS = { countries: "Countries", history: "History", animals: "Animals", science: "Science", sports: "Sports", harryPotter: "Harry Potter", movies: "Movies", space: "Space", food: "Food" };
+    const MODE_LABELS_AR = { countries: "دول", history: "تاريخ", animals: "حيوانات", science: "علوم", sports: "رياضة", harryPotter: "هاري بوتر", movies: "أفلام", space: "فضاء", food: "طعام" };
     const LEADERBOARD_KEY = 'kidsQuizLeaderboard';
     const PLAYERS_KEY = 'kidsQuizPlayers';
     const STICKER_COUNTS_KEY = 'kidsQuizStickerCounts';
